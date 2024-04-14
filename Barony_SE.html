@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Barony Save Editor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Groshie">
+        <meta name="description" content="Savegame editor for the game roguelike game Barony">
+        <meta name="keywords" content="Barony, game, editor, save">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="Barony_SE.js"></script>
+    </head>
+    <body>
+        <div ng-app="Barony_SE" ng_controller="BaronyCtrl">
+            <div class="container-fluid">
+                <div class="col-sm-12 pt-5 ms-5" id="header-div">
+                    <div class="col-sm-12">
+                        <h1>Barony Save Editor</h1>
+                    </div>
+                    <div class="col-sm-12">
+                        <h2>- A simple web-based savegame editor for <a href="https://www.baronygame.com/">Barony</a></h2>
+                    </div>
+                </div>
+                <div class="col-sm-12 ms-5" id="app-div">
+                    <div class="col-sm-12">
+                        <p><b>Before you start:</b> It is recommended that you also back your savegame up to another folder, just in case!</p>
+                        <p>Begin by selecting the savegame you wish to edit using the control below, then click the button to load it.</p>
+                        <p>Tested on Barony version 4.2.1.</p>
+                        <p><i>Note: Saved games are usually located within the game folder (..\Barony\savegames\)</i></p>
+                    </div>
+                    <div class="col-sm-12 m-1">
+                        <label for="file-input" class="form-label">File:</label>
+                        <input type="file" class="form-control w-25" id="file-input" accept=".baronysave"/>
+                    </div>
+                    <div class="col-sm-12 m-1">
+                        <input type="button" class="btn btn-primary" ng-click="load()" value="Load save file"/>
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <p>Once you have loaded your game, you should see a table of values that you can edit below.</p>
+                        <p>Edit the values, then click the button at the bottom of the page to export your new save file!</p>
+                    </div>
+                    <div ng-if="saveData" class="col-sm-12 mt-1 w-75">
+                        <div ng-repeat="player in saveData.players">
+                            <h3>{{player.stats.name ? player.stats.name : "Player " + (player.playerNum + 1)}}</h3>
+                            <h4>General stats</h4>
+                            <table class="table table-striped">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_name" class="form-label">Name: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_name" type="text" class="form-control" value="{{player.stats.name}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_level" class="form-label">Level: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_level" type="number" class="form-control" value="{{player.stats.LVL}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_exp" class="form-label">Experience: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_exp" type="number" class="form-control" value="{{player.stats.EXP}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_gold" class="form-label">Gold: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_gold" type="number" class="form-control" value="{{player.stats.GOLD}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_hunger" class="form-label">Hunger: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hunger" type="number" class="form-control" value="{{player.stats.HUNGER}}"/>
+                                        </td>
+                                        <th></th>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>Attributes</h4>
+                            <table class="table table-striped">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_str" class="form-label">Strength: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_str" type="number" class="form-control" value="{{player.stats.STR}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_dex" class="form-label">Dexterity: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_dex" type="number" class="form-control" value="{{player.stats.DEX}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_con" class="form-label">Constitution: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_con" type="number" class="form-control" value="{{player.stats.CON}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_int" class="form-label">Intelligence: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_int" type="number" class="form-control" value="{{player.stats.INT}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_per" class="form-label">Perception: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_per" type="number" class="form-control" value="{{player.stats.PER}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_chr" class="form-label">Charisma: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_chr" type="number" class="form-control" value="{{player.stats.CHR}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_hp" class="form-label">HP: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hp" type="number" class="form-control" value="{{player.stats.HP}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_maxhp" class="form-label">Max HP: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxhp" type="number" class="form-control" value="{{player.stats.maxHP}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_mp" class="form-label">MP: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_mp" type="number" class="form-control" value="{{player.stats.MP}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_maxmp" class="form-label">Max MP: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxmp" type="number" class="form-control" value="{{player.stats.maxMP}}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>Proficiencies</h4>
+                            <table class="table table-striped">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_swimming" class="form-label">Swimming: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_swimming" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[4]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_stealth" class="form-label">Stealth: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_stealth" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[1]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_blocking" class="form-label">Blocking: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_blocking" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[13]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_ranged" class="form-label">Ranged: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_ranged" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[8]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_unarmed" class="form-label">Unarmed: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_unarmed" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[14]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_swords" class="form-label">Swords: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_swords" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[9]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_polearms" class="form-label">Polearms: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_polearms" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[12]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_axes" class="form-label">Axes: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_axes" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[11]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_maces" class="form-label">Maces: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maces" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[10]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_leadership" class="form-label">Leadership: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_leadership" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[5]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_trading" class="form-label">Trading: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_trading" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[2]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_appraisal" class="form-label">Appraisal: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_appraisal" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[3]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_tinkering" class="form-label">Tinkering: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_tinkering" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[0]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_alchemy" class="form-label">Alchemy: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_alchemy" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[15]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label for="{{player.playerNum}}_magic" class="form-label">Magic: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_magic" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[7]}}"/>
+                                        </td>
+                                        <th>
+                                            <label for="{{player.playerNum}}_casting" class="form-label">Casting: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_casting" type="number" class="form-control" value="{{player.stats.PROFICIENCIES[6]}}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>Status effects</h4>
+                            <p>Check box if effect should be ON. Leave timer at 0 if you want the effect to be on forever!</p>
+                            <table class="table table-striped">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_invisible_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[5]}}"/>
+                                            <label for="{{player.playerNum}}_invisible" class="form-label">Invisible: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_invisible" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[5]}}"/>
+                                        </td>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_fast_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[9]}}"/>
+                                            <label for="{{player.playerNum}}_fast" class="form-label">Fast: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_fast" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[9]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_levitating_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[11]}}"/>
+                                            <label for="{{player.playerNum}}_levitating" class="form-label">Levitating: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_levitating" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[11]}}"/>
+                                        </td>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_telepath_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[12]}}"/>
+                                            <label for="{{player.playerNum}}_telepath" class="form-label">Telepath: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_telepath" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[12]}}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_magicresist_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[16]}}"/>
+                                            <label for="{{player.playerNum}}_magicresist" class="form-label">Mag. resist: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_magicresist" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[16]}}"/>
+                                        </td>
+                                        <th>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_magicreflect_check" type="checkbox" class="form-check-input" ng-checked="{{player.stats.EFFECTS[17]}}"/>
+                                            <label for="{{player.playerNum}}_magicreflect" class="form-label">Mag. reflect: </label>
+                                        </th>
+                                        <td>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_magicreflect" type="number" class="form-control" value="{{player.stats.EFFECTS_TIMERS[17]}}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mt-1" id="table-div"></div>
+                </div>
+                <div class="col-sm-12 ms-5" id="table-div" ng-if="saveData">
+                    <input type="button" class="btn btn-lg btn-primary" value="Export new save file" ng-click="export()"/>
+                </div>
+            </div>
+            <footer>
+                <hr/>
+                <div class="col-sm-12 ms-5">
+                    <p>Made by: Groshie</p>
+                    <p>Disclaimer: I am not at all affiliated with the game or the developer of the game, I just like it!</p>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
