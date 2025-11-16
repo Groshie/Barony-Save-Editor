@@ -20,9 +20,9 @@ Remember to back up (or simply don't replace) your original save file. I haven't
 I am not affiliated with the game or developer of the game in any way, I just enjoy playing and testing - I hope that you will too!
 
 ## Screenshots
-### The main app
+<h3>The main app</h3>
 <img width="778" height="464" alt="bild" src="https://github.com/user-attachments/assets/02f87d22-d9b9-4359-902a-d2b5a6ac0cde" />
-### Proficiencies
+<h3>Proficiencies</h3>
 <img width="920" height="141" alt="bild" src="https://github.com/user-attachments/assets/5c517b58-cbde-4da7-bec4-ee07a859df2d" />
-### Adding spells
+<h3>Adding spells</h3>
 <img width="909" height="694" alt="bild" src="https://github.com/user-attachments/assets/86f910b7-a514-49fe-959e-af6951c640b9" />
