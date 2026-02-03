@@ -1,5 +1,6 @@
 # Barony-Save-Editor
 A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>.
+Tested for version 5.03 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder.
 It's written in html and javascript, and uses Bootstrap 5 and AngularJS.
 
 Basically, you input your save file into the app, edit values, and then export the new save file.
@@ -11,7 +12,7 @@ Basically, you input your save file into the app, edit values, and then export t
   <li>Change attributes (strength, agility, max hp etc.)</li>
   <li>Change proficiencies (swimming, blocking, sword, etc.)</li>
   <li>Toggle status effects or set timers for them (drunk, magic resist, strength, etc.)</li>
-  <li>Add spells (but not remove them, yet)</li>
+  <li>Add spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
 </ul>
 
 ## Disclaimers
