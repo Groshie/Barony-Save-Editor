@@ -7,8 +7,8 @@
 <ul>
   <li>Change game information (dungeon level, game seed, map seed)</li>
   <li>Change general stats (name, gold, hunger, etc.)</li>
-  <li>Change attributes (strength, agility, max hp etc.)</li>
-  <li>Change proficiencies (swimming, blocking, sword, etc.)</li>
+  <li>Change attributes (strength, agility, max hp, etc.)</li>
+  <li>Change proficiencies (thaumaturgy, blocking, sword, etc.)</li>
   <li>Toggle status effects or set timers for them (drunk, magic resist, strength, etc.)</li>
   <li>Add spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
 </ul>
