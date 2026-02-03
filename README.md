@@ -1,11 +1,9 @@
-# Barony-Save-Editor
-<p>A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>.</p>
-<p>Tested for version 5.03 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder. <a href="https://groshie.github.io/Barony%20Save%20Editor/Barony_SE.html">Use the latest version here!</a></p>
-It's written in html and javascript, and uses Bootstrap 5 and AngularJS.
+<h1>Barony Save Editor</h1>
+<p>A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>. Basically, you input your save file into the app, edit values, and then export the new save file.</p>
+<p>Tested for version 5.03 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder. It's written in html and javascript, and uses Bootstrap 5 and AngularJS.</p>
+<p>You can download it and run it locally in your browser, or <a href="https://groshie.github.io/Barony%20Save%20Editor/Barony_SE.html">use the latest version here</a>!</p>
 
-Basically, you input your save file into the app, edit values, and then export the new save file.
-
-## What can it do?
+<h2>What can it do?</h2>
 <ul>
   <li>Change game information (dungeon level, game seed, map seed)</li>
   <li>Change general stats (name, gold, hunger, etc.)</li>
@@ -15,12 +13,11 @@ Basically, you input your save file into the app, edit values, and then export t
   <li>Add spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
 </ul>
 
-## Disclaimers
-Remember to back up (or simply don't replace) your original save file. I haven't found any problems, but I wouldn't be surprised if there's a possibility to corrupt the save file depending on different combinations.
+<h2>Disclaimers</h2>
+<p>Remember to back up (or simply don't replace) your original save file. I haven't found any problems, but I wouldn't be surprised if there's a possibility to corrupt the save file depending on different combinations.</p>
+<p>I am not affiliated with the game or developer of the game in any way, I just enjoy playing and testing - I hope that you will too!</p>
 
-I am not affiliated with the game or developer of the game in any way, I just enjoy playing and testing - I hope that you will too!
-
-## Screenshots
+<h2>Screenshots</h2>
 <h3>The main app</h3>
 <img width="778" height="464" alt="bild" src="https://github.com/user-attachments/assets/02f87d22-d9b9-4359-902a-d2b5a6ac0cde" />
 <h3>Proficiencies</h3>
