@@ -67,57 +67,549 @@ app.controller('BaronyCtrl', function($scope) {
     ];
 
     $scope.statusEffects = [
-        ["asleep", "Asleep"],
-        ["poisoned", "Poisoned"],
-        ["stunned", "Stunned"],
-        ["confused", "Confused"],
-        ["drunk", "Drunk"],
-        ["invisible", "Invisible"],
-        ["blind", "Blind"],
-        ["greasy", "Greasy"],
-        ["messy", "Messy"],
-        ["fast", "Fast"],
-        ["paralyzed", "Paralyzed"],
-        ["levitating", "Levitating"],
-        ["telepath", "Telepath"],
-        ["vomiting", "Vomiting"],
-        ["bleeding", "Bleeding"],
-        ["slow", "Slow"],
-        ["magicresist", "Mag. Resist"],
-        ["magicreflect", "Mag. Reflect"],
-        ["vampiricaura", "Vamp. Aura"],
-        ["redbuff", "Red Shr. Buff"],
-        ["greenbuff", "Green Shr. Buff"],
-        ["bluebuff", "Blue Shr. Buff"],
-        ["hpregen", "HP Regen"],
-        ["mpregen", "MP Regen"],
-        ["pacified", "Pacified"],
-        ["polymorphed", "Polymorphed"],
-        ["knockback", "Knockback"],
-        ["hungover", "Hungover"],
-        ["strength", "Strength"],
-        ["shapeshift", "Shapeshift"],
-        ["webbed", "Webbed"],
-        ["fear", "Fear"],
-        ["elementalfocus", "Elem. Focus"],
-        ["disoriented", "Disoriented"],
-        ["arcanemarked", "Arcane Marked"],
-        ["trollsblood", "Troll's Blood"],
-        ["flutter", "Flutter"],
-        ["dash", "Dash"],
-        ["distracted", "Distracted"],
-        ["mimiclocked", "Mimic Lock."],
-        ["rooted", "Rooted"],
-        ["nauseaprotection", "Nausea Prot."],
-        ["stamina", "Stamina"],
-        ["mentality", "Mentality"],
-        ["agility", "Agility"],
-        ["rally", "Rally"],
-        ["marigoldhealing", "Marigold Heal."]
+        [
+            "asleep",
+            "Asleep"
+        ],
+        [
+            "poisoned",
+            "Poisoned"
+        ],
+        [
+            "stunned",
+            "Stunned"
+        ],
+        [
+            "confused",
+            "Confused"
+        ],
+        [
+            "drunk",
+            "Drunk"
+        ],
+        [
+            "invisible",
+            "Invisible"
+        ],
+        [
+            "blind",
+            "Blind"
+        ],
+        [
+            "greasy",
+            "Greasy"
+        ],
+        [
+            "messy",
+            "Messy"
+        ],
+        [
+            "fast",
+            "Fast"
+        ],
+        [
+            "paralyzed",
+            "Paralyzed"
+        ],
+        [
+            "levitating",
+            "Levitating"
+        ],
+        [
+            "telepath",
+            "Telepath"
+        ],
+        [
+            "vomiting",
+            "Vomiting"
+        ],
+        [
+            "bleeding",
+            "Bleeding"
+        ],
+        [
+            "slow",
+            "Slow"
+        ],
+        [
+            "magicresist",
+            "Magicresist"
+        ],
+        [
+            "magicreflect",
+            "Magicreflect"
+        ],
+        [
+            "vampiricaura",
+            "Vampiricaura"
+        ],
+        [
+            "shrinered buff",
+            "Shrine red buff"
+        ],
+        [
+            "shrinegreen buff",
+            "Shrine green buff"
+        ],
+        [
+            "shrineblue buff",
+            "Shrine blue buff"
+        ],
+        [
+            "hpregen",
+            "Hp regen"
+        ],
+        [
+            "mpregen",
+            "Mp regen"
+        ],
+        [
+            "pacify",
+            "Pacify"
+        ],
+        [
+            "polymorph",
+            "Polymorph"
+        ],
+        [
+            "knockback",
+            "Knockback"
+        ],
+        [
+            "withdrawal",
+            "Withdrawal"
+        ],
+        [
+            "potionstr",
+            "Strength"
+        ],
+        [
+            "shapeshift",
+            "Shapeshift"
+        ],
+        [
+            "webbed",
+            "Webbed"
+        ],
+        [
+            "fear",
+            "Fear"
+        ],
+        [
+            "magicamplify",
+            "Magicamplify"
+        ],
+        [
+            "disoriented",
+            "Disoriented"
+        ],
+        [
+            "shadowtagged",
+            "Shadow tagged"
+        ],
+        [
+            "trollsblood",
+            "Trolls blood"
+        ],
+        [
+            "flutter",
+            "Flutter"
+        ],
+        [
+            "dash",
+            "Dash"
+        ],
+        [
+            "distractedcooldown",
+            "Distracted cooldown"
+        ],
+        [
+            "mimiclocked",
+            "Mimic locked"
+        ],
+        [
+            "rooted",
+            "Rooted"
+        ],
+        [
+            "nauseaprotection",
+            "Nausea protection"
+        ],
+        [
+            "conbonus",
+            "Con bonus"
+        ],
+        [
+            "pwr",
+            "Pwr"
+        ],
+        [
+            "agility",
+            "Agility"
+        ],
+        [
+            "rally",
+            "Rally"
+        ],
+        [
+            "marigold",
+            "Marigold"
+        ],
+        [
+            "ensembleflute",
+            "Ensemble flute"
+        ],
+        [
+            "ensemblelyre",
+            "Ensemble lyre"
+        ],
+        [
+            "ensembledrum",
+            "Ensemble drum"
+        ],
+        [
+            "ensemblelute",
+            "Ensemble lute"
+        ],
+        [
+            "ensemblehorn",
+            "Ensemble horn"
+        ],
+        [
+            "lift",
+            "Lift"
+        ],
+        [
+            "guardspirit",
+            "Guard spirit"
+        ],
+        [
+            "guardbody",
+            "Guard body"
+        ],
+        [
+            "divineguard",
+            "Divine guard"
+        ],
+        [
+            "nimbleness",
+            "Nimbleness"
+        ],
+        [
+            "greatermight",
+            "Greater might"
+        ],
+        [
+            "counsel",
+            "Counsel"
+        ],
+        [
+            "sturdiness",
+            "Sturdiness"
+        ],
+        [
+            "blessfood",
+            "Bless food"
+        ],
+        [
+            "pinpoint",
+            "Pinpoint"
+        ],
+        [
+            "penance",
+            "Penance"
+        ],
+        [
+            "sacredpath",
+            "Sacred path"
+        ],
+        [
+            "detectenemy",
+            "Detect enemy"
+        ],
+        [
+            "bloodward",
+            "Blood ward"
+        ],
+        [
+            "trueblood",
+            "True blood"
+        ],
+        [
+            "divinezeal",
+            "Divine zeal"
+        ],
+        [
+            "maximise",
+            "Maximise"
+        ],
+        [
+            "minimise",
+            "Minimise"
+        ],
+        [
+            "weakness",
+            "Weakness"
+        ],
+        [
+            "incoherence",
+            "Incoherence"
+        ],
+        [
+            "overcharge",
+            "Overcharge"
+        ],
+        [
+            "envenomweapon",
+            "Envenom weapon"
+        ],
+        [
+            "magicgrease",
+            "Magic grease"
+        ],
+        [
+            "command",
+            "Command"
+        ],
+        [
+            "mimicvoid",
+            "Mimic void"
+        ],
+        [
+            "curseflesh",
+            "Curse flesh"
+        ],
+        [
+            "numbingbolt",
+            "Numbing bolt"
+        ],
+        [
+            "delaypain",
+            "Delay pain"
+        ],
+        [
+            "seekcreature",
+            "Seek creature"
+        ],
+        [
+            "taboo",
+            "Taboo"
+        ],
+        [
+            "courage",
+            "Courage"
+        ],
+        [
+            "cowardice",
+            "Cowardice"
+        ],
+        [
+            "spores",
+            "Spores"
+        ],
+        [
+            "abundance",
+            "Abundance"
+        ],
+        [
+            "greaterabundance",
+            "Greater abundance"
+        ],
+        [
+            "preserve",
+            "Preserve"
+        ],
+        [
+            "mistform",
+            "Mist form"
+        ],
+        [
+            "forceshield",
+            "Force shield"
+        ],
+        [
+            "lightenload",
+            "Lighten load"
+        ],
+        [
+            "attractitems",
+            "Attract items"
+        ],
+        [
+            "returnitem",
+            "Return item"
+        ],
+        [
+            "demesnedoor",
+            "Demesne door"
+        ],
+        [
+            "reflectorshield",
+            "Reflector shield"
+        ],
+        [
+            "dizzy",
+            "Dizzy"
+        ],
+        [
+            "spin",
+            "Spin"
+        ],
+        [
+            "criticalspell",
+            "Critical spell"
+        ],
+        [
+            "magicwell",
+            "Magic well"
+        ],
+        [
+            "static",
+            "Static"
+        ],
+        [
+            "absorbmagic",
+            "Absorb magic"
+        ],
+        [
+            "flamecloak",
+            "Flame cloak"
+        ],
+        [
+            "dusted",
+            "Dusted"
+        ],
+        [
+            "noisevisibility",
+            "Noise visibility"
+        ],
+        [
+            "rationspicy",
+            "Ration spicy"
+        ],
+        [
+            "rationsour",
+            "Ration sour"
+        ],
+        [
+            "rationbitter",
+            "Ration bitter"
+        ],
+        [
+            "rationhearty",
+            "Ration hearty"
+        ],
+        [
+            "rationherbal",
+            "Ration herbal"
+        ],
+        [
+            "rationsweet",
+            "Ration sweet"
+        ],
+        [
+            "growth",
+            "Growth"
+        ],
+        [
+            "thorns",
+            "Thorns"
+        ],
+        [
+            "bladevines",
+            "Bladevines"
+        ],
+        [
+            "bastionmushroom",
+            "Bastion mushroom"
+        ],
+        [
+            "bastionroots",
+            "Bastion roots"
+        ],
+        [
+            "focilight peace",
+            "Foci light peace"
+        ],
+        [
+            "focilight justice",
+            "Foci light justice"
+        ],
+        [
+            "focilight providence",
+            "Foci light providence"
+        ],
+        [
+            "focilight purity",
+            "Foci light purity"
+        ],
+        [
+            "focilight sanctuary",
+            "Foci light sanctuary"
+        ],
+        [
+            "stasis",
+            "Stasis"
+        ],
+        [
+            "hpmp regen",
+            "Hp mp regen"
+        ],
+        [
+            "disrupted",
+            "Disrupted"
+        ],
+        [
+            "frost",
+            "Frost"
+        ],
+        [
+            "magiciansarmor",
+            "Magicians armor"
+        ],
+        [
+            "projectspirit",
+            "Project spirit"
+        ],
+        [
+            "defyflesh",
+            "Defy flesh"
+        ],
+        [
+            "pinpointdamage",
+            "Pinpoint damage"
+        ],
+        [
+            "radiantheart",
+            "Radiant heart"
+        ],
+        [
+            "divinefire",
+            "Divine fire"
+        ],
+        [
+            "healingword",
+            "Healing word"
+        ],
+        [
+            "holyfire",
+            "Holy fire"
+        ],
+        [
+            "sigil",
+            "Sigil"
+        ],
+        [
+            "sanctuary",
+            "Sanctuary"
+        ],
+        [
+            "ducked",
+            "Ducked"
+        ]
     ];
 
     $scope.spells = [
-        "None",
         "Forcebolt",
         "Magic Missile",
         "Cold",
@@ -184,144 +676,144 @@ app.controller('BaronyCtrl', function($scope) {
         "Focus of Arcs",
         "Focus of Sandblast",
         "Meteor",
-        "SPELL_FLAMES",
-        "SPELL_ICE_WAVE",
-        "SPELL_CONJURE_FOOD",
-        "SPELL_GUARD_BODY",
-        "SPELL_GUARD_SPIRIT",
-        "SPELL_DIVINE_GUARD",
-        "SPELL_PROF_NIMBLENESS",
-        "SPELL_PROF_GREATER_MIGHT",
-        "SPELL_PROF_COUNSEL",
-        "SPELL_PROF_STURDINESS",
-        "SPELL_BLESS_FOOD",
-        "SPELL_PINPOINT",
-        "SPELL_DONATION",
-        "SPELL_SCRY_ALLIES",
-        "SPELL_SCRY_SHRINES",
-        "SPELL_SCRY_TRAPS",
-        "SPELL_SCRY_TREASURES",
-        "SPELL_PENANCE",
-        "SPELL_CALL_ALLIES",
-        "SPELL_SACRED_PATH",
-        "SPELL_MANIFEST_DESTINY",
-        "SPELL_DETECT_ENEMY",
-        "SPELL_DETECT_ENEMIES",
-        "SPELL_TURN_UNDEAD",
-        "SPELL_HEAL_OTHER",
-        "SPELL_BLOOD_WARD",
-        "SPELL_TRUE_BLOOD",
-        "SPELL_DIVINE_ZEAL",
-        "SPELL_ALTER_INSTRUMENT",
-        "SPELL_MAXIMISE",
-        "SPELL_MINIMISE",
-        "SPELL_JUMP",
-        "SPELL_INCOHERENCE",
-        "SPELL_OVERCHARGE",
-        "SPELL_ENVENOM_WEAPON",
-        "SPELL_PSYCHIC_SPEAR",
-        "SPELL_DEFY_FLESH",
-        "SPELL_GREASE_SPRAY",
-        "SPELL_BLOOD_WAVES",
-        "SPELL_BOOBY_TRAP",
+        "Flames",
+        "Ice wave",
+        "Conjure food",
+        "Guard body",
+        "Guard spirit",
+        "Divine guard",
+        "Prof nimbleness",
+        "Prof greater_might",
+        "Prof counsel",
+        "Prof sturdiness",
+        "Bless food",
+        "Pinpoint",
+        "Donation",
+        "Scry allies",
+        "Scry shrines",
+        "Scry traps",
+        "Scry treasures",
+        "Penance",
+        "Call allies",
+        "Sacred path",
+        "Manifest destiny",
+        "Detect enemy",
+        "Detect enemies",
+        "Turn undead",
+        "Heal other",
+        "Blood ward",
+        "True blood",
+        "Divine zeal",
+        "Alter instrument",
+        "Maximise",
+        "Minimise",
+        "Jump",
+        "Incoherence",
+        "Overcharge",
+        "Envenom weapon",
+        "Psychic spear",
+        "Defy flesh",
+        "Grease spray",
+        "Blood waves",
+        "Booby trap",
         "Compel",
-        "SPELL_METALLURGY",
-        "SPELL_GEOMANCY",
-        "SPELL_FORGE_KEY",
-        "SPELL_FORGE_JEWEL",
-        "SPELL_ENHANCE_WEAPON",
-        "SPELL_RESHAPE_WEAPON",
-        "SPELL_ALTER_ARROW",
-        "SPELL_VOID_CHEST",
-        "SPELL_PUNCTURE_VOID",
-        "SPELL_LEAD_BOLT",
-        "SPELL_MERCURY_BOLT",
-        "SPELL_NUMBING_BOLT",
-        "SPELL_DELAY_PAIN",
-        "SPELL_CURSE_FLESH",
-        "SPELL_REVENANT_CURSE",
-        "SPELL_COWARDICE",
-        "SPELL_COURAGE",
-        "SPELL_SEEK_ALLY",
-        "SPELL_SEEK_FOE",
-        "SPELL_DEEP_SHADE",
-        "SPELL_SHADE_BOLT",
-        "SPELL_SPIRIT_WEAPON",
-        "SPELL_ADORCISM",
-        "SPELL_TABOO",
-        "SPELL_WONDERLIGHT",
-        "SPELL_SPORES",
-        "SPELL_SPORE_BOMB",
-        "SPELL_WINDGATE",
-        "SPELL_VORTEX",
-        "SPELL_TELEKINESIS",
-        "SPELL_KINETIC_PUSH",
-        "SPELL_DISARM",
-        "SPELL_STRIP",
-        "SPELL_ABUNDANCE",
-        "SPELL_GREATER_ABUNDANCE",
-        "SPELL_PRESERVE",
-        "SPELL_RESTORE",
-        "SPELL_SABOTAGE",
-        "SPELL_HARVEST_TRAP",
-        "SPELL_MIST_FORM",
-        "SPELL_HOLOGRAM",
-        "SPELL_FORCE_SHIELD",
-        "SPELL_REFLECTOR",
+        "Metallurgy",
+        "Geomancy",
+        "Forge key",
+        "Forge jewel",
+        "Enhance weapon",
+        "Reshape weapon",
+        "Alter arrow",
+        "Void chest",
+        "Puncture void",
+        "Lead bolt",
+        "Mercury bolt",
+        "Numbing bolt",
+        "Delay pain",
+        "Curse flesh",
+        "Revenant curse",
+        "Cowardice",
+        "Courage",
+        "Seek ally",
+        "Seek foe",
+        "Deep shade",
+        "Shade bolt",
+        "Spirit weapon",
+        "Adorcism",
+        "Taboo",
+        "Wonderlight",
+        "Spores",
+        "Spore bomb",
+        "Windgate",
+        "Vortex",
+        "Telekinesis",
+        "Kinetic push",
+        "Disarm",
+        "Strip",
+        "Abundance",
+        "Greater abundance",
+        "Preserve",
+        "Restore",
+        "Sabotage",
+        "Harvest trap",
+        "Mist form",
+        "Hologram",
+        "Force shield",
+        "Reflector",
         "Splinter Armor",
-        "SPELL_LIGHTEN_LOAD",
-        "SPELL_ATTRACT_ITEMS",
-        "SPELL_RETURN_ITEMS",
-        "SPELL_ABSORB_MAGIC",
-        "SPELL_SEIZE_MAGIC",
-        "SPELL_DEFACE",
-        "SPELL_SUNDER_MONUMENT",
-        "SPELL_DEMESNE_DOOR",
-        "SPELL_TUNNEL",
-        "SPELL_NULL_AREA",
-        "SPELL_SPHERE_SILENCE",
-        "SPELL_FORGE_METAL_SCRAP",
-        "SPELL_FORGE_MAGIC_SCRAP",
-        "SPELL_FIRE_SPRITE",
-        "SPELL_FLAME_ELEMENTAL",
-        "SPELL_SPIN",
-        "SPELL_DIZZY",
-        "SPELL_VANDALISE",
-        "SPELL_DESECRATE",
-        "SPELL_SANCTIFY",
-        "SPELL_SANCTIFY_WATER",
-        "SPELL_CLEANSE_FOOD",
-        "SPELL_ADORCISE_INSTRUMENT",
-        "SPELL_FLAME_CLOAK",
-        "SPELL_CRITICAL_SPELL",
-        "SPELL_MAGIC_WELL",
-        "SPELL_FLAME_SHIELD",
-        "SPELL_LIGHTNING_BOLT",
-        "SPELL_DISRUPT_EARTH",
-        "SPELL_EARTH_SPINES",
-        "SPELL_LIGHTNING_NEXUS",
-        "SPELL_FIRE_WALL",
-        "SPELL_LIFT",
-        "SPELL_SLAM",
-        "SPELL_IGNITE",
-        "SPELL_SHATTER_OBJECTS",
-        "SPELL_KINETIC_FIELD",
-        "SPELL_ICE_BLOCK",
+        "Lighten load",
+        "Attract items",
+        "Return items",
+        "Absorb magic",
+        "Seize magic",
+        "Deface",
+        "Sunder monument",
+        "Demesne door",
+        "Tunnel",
+        "Null area",
+        "Sphere silence",
+        "Forge metal_scrap",
+        "Forge magic_scrap",
+        "Fire sprite",
+        "Flame elemental",
+        "Spin",
+        "Dizzy",
+        "Vandalise",
+        "Desecrate",
+        "Sanctify",
+        "Sanctify water",
+        "Cleanse food",
+        "Adorcise instrument",
+        "Flame cloak",
+        "Critical spell",
+        "Magic well",
+        "Flame shield",
+        "Lightning bolt",
+        "Disrupt earth",
+        "Earth spines",
+        "Lightning nexus",
+        "Fire wall",
+        "Lift",
+        "Slam",
+        "Ignite",
+        "Shatter objects",
+        "Kinetic field",
+        "Ice block",
         "Meteor Shower",
-        "SPELL_CHRONOMIC_FIELD",
-        "SPELL_ETERNALS_GAZE",
-        "SPELL_SHATTER_EARTH",
-        "SPELL_EARTH_ELEMENTAL",
-        "SPELL_ROOTS",
-        "SPELL_MUSHROOM",
-        "SPELL_MYCELIUM_BOMB",
-        "SPELL_MYCELIUM_SPORES",
-        "SPELL_HEAL_PULSE",
-        "SPELL_SHRUB",
-        "SPELL_THORNS",
-        "SPELL_BLADEVINES",
-        "SPELL_BASTION_MUSHROOM",
-        "SPELL_BASTION_ROOTS",
+        "Chronomic field",
+        "Eternals gaze",
+        "Shatter earth",
+        "Earth elemental",
+        "Roots",
+        "Mushroom",
+        "Mycelium bomb",
+        "Mycelium spores",
+        "Heal pulse",
+        "Shrub",
+        "Thorns",
+        "Bladevines",
+        "Bastion mushroom",
+        "Bastion roots",
         "Icon of Claim Life",
         "Icon of Void Rift",
         "Icon of Silence",
@@ -333,15 +825,16 @@ app.controller('BaronyCtrl', function($scope) {
         "Symbol of Purity",
         "Symbol of Sanctuary",
         "Scepter Blast",
-        "SPELL_MAGICIANS_ARMOR",
-        "SPELL_PROJECT_SPIRIT",
-        "SPELL_BREATHE_FIRE",
-        "SPELL_HEAL_MINOR",
-        "SPELL_HOLY_FIRE",
-        "SPELL_SIGIL",
-        "SPELL_SANCTUARY",
-        "SPELL_HOLY_BEAM"
+        "Magicians armor",
+        "Project spirit",
+        "Breathe fire",
+        "Heal minor",
+        "Holy fire",
+        "Sigil",
+        "Sanctuary",
+        "Holy beam"
     ];
+
 
     // Export as file
     $scope.export = function() {
