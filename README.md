@@ -13,10 +13,6 @@
   <li>Add spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
 </ul>
 
-<h2>Disclaimers</h2>
-<p>Remember to back up (or simply don't replace) your original save file. I haven't found any problems, but I wouldn't be surprised if there's a possibility to corrupt the save file depending on different combinations.</p>
-<p>I am not affiliated with the game or developer of the game in any way, I just enjoy playing and testing - I hope that you will too!</p>
-
 <h2>Screenshots</h2>
 <h3>The main app</h3>
 <img width="778" height="464" alt="bild" src="https://github.com/user-attachments/assets/02f87d22-d9b9-4359-902a-d2b5a6ac0cde" />
@@ -24,3 +20,12 @@
 <img width="920" height="141" alt="bild" src="https://github.com/user-attachments/assets/5c517b58-cbde-4da7-bec4-ee07a859df2d" />
 <h3>Adding spells</h3>
 <img width="909" height="694" alt="bild" src="https://github.com/user-attachments/assets/86f910b7-a514-49fe-959e-af6951c640b9" />
+
+<h2>Known issues</h2>
+<ul>
+  <li>Adding the effect "Telepath" may render your held items invisible when loading the game. A workaround for this is to swap items back and forth using the hotbar (so make sure you have your held items on the hotbar!), this seems to have to do with the game's code and not this tool so it's not something I can fix unfortunately.</li>
+</ul>
+
+<h2>Disclaimers</h2>
+<p>Remember to back up (or simply don't replace) your original save file. I haven't found any problems, but I wouldn't be surprised if there's a possibility to corrupt the save file depending on different combinations.</p>
+<p>I am not affiliated with the game or developer of the game in any way, I just enjoy playing and testing - I hope that you will too!</p>
