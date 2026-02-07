@@ -610,6 +610,7 @@ app.controller('BaronyCtrl', function($scope) {
     ];
 
     $scope.spells = [
+        "None",
         "Forcebolt",
         "Magic Missile",
         "Cold",
