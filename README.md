@@ -1,6 +1,6 @@
 <h1>Barony Save Editor</h1>
 <p>A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>. Basically, you input your save file into the app, edit values, and then export the new save file.</p>
-<p>Tested for version 5.03 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder. It's written in html and javascript, and uses Bootstrap 5 and AngularJS.</p>
+<p>Tested for version 5.01 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder. It's written in html and javascript, and uses Bootstrap 5 and AngularJS.</p>
 <p>You can download it and run it locally in your browser, or <a href="https://groshie.github.io/Barony%20Save%20Editor/Barony_SE.html">use the latest version here</a>!</p>
 
 <h2>What can it do?</h2>
