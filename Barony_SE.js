@@ -993,11 +993,50 @@ app.controller('BaronyCtrl', function($scope) {
                 "y": maxX == 3 ? maxY + 1 : maxY
             };
             playerInventory.push(thisSpell);
-            //console.log("Spell " + currentSpell + " added to player spell list!");
-        } 
-        //else {
-        //    console.log("Spell " + currentSpell + " is already in the list, and was not added again.");
-        //}
+        } else {
+            console.log("Spell " + currentSpell + " is already in the list of spells, and was not added again.");
+        }
+        return
+    }
+
+    $scope.removeSpell = function () {
+        let thisSelect = document.getElementById(event.srcElement.id[0] + "_spell_select");
+        let thisPlayer = angular.element(document.getElementById(event.srcElement.id)).scope().player;
+        let spellList = angular.element(document.getElementById("barony-div")).scope().spells;
+        let playerSpells = thisPlayer.spells;
+        let currentSpell = thisSelect.value;
+        let playerInventory = thisPlayer.stats.inventory;
+        
+        if (playerSpells.includes(spellList.indexOf(currentSpell))) {
+            //Remove spell
+            for (let i=0;i<playerInventory.length;i++) {
+                if (playerInventory[i].type == 162 && playerInventory[i].appearance == spellList.indexOf(currentSpell)) {
+                    if (thisPlayer.learned_spells.includes(playerInventory[i].appearance)) {
+                        thisPlayer.learned_spells.splice(thisPlayer.learned_spells.indexOf(playerInventory[i].appearance), 1);
+                    }
+                    thisPlayer.spells.splice(thisPlayer.spells.indexOf(playerInventory[i].appearance), 1);
+                    playerInventory.splice(i, 1);
+                }
+            }
+            
+            //Re-sort spell inventory
+            let maxY = 0;
+            let maxX = 0;
+            for (let i=0;i<playerInventory.length;i++) {
+                if (playerInventory[i].type == 162) {
+                    playerInventory[i].x = maxX;
+                    playerInventory[i].y = maxY;
+                    maxX++;
+                }
+
+                if (maxX == 4) {
+                    maxX = 0;
+                    maxY++;
+                }
+            }
+        } else {
+            console.log("Spell " + currentSpell + " was not found in the list of spells.");
+        }
         return
     }
     return

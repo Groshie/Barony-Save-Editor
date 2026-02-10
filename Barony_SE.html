@@ -109,7 +109,7 @@
                             </div>
                             <div class="row mt-3">
                                 <h4>Attributes</h4>
-                                <p><i>Attributes, higher is better what else can I say? (Integers, possibly limited to 255?)</i></p>
+                                <p><i>Attributes, higher is better what else can I say?</i></p>
                                 <div class="col-sm-2 form-group">
                                     <label for="{{player.playerNum}}_str" class="form-label">Strength: </label>
                                     <input name="player{{player.playerNum}}" id="{{player.playerNum}}_str" type="number" class="form-control" ng-model="player.stats.STR"/>
@@ -153,7 +153,7 @@
                             </div>
                             <div class="row mt-3">
                                 <h4>Proficiencies</h4>
-                                <p><i>Proficiencies go from 0-100 (integer).</i></p>
+                                <p><i>Proficiencies go from 0-100 (integer), higher is better.</i></p>
                                 <div class="col-sm-3 form-group">
                                     <label for="{{player.playerNum}}_thaumaturgy" class="form-label">Thaumaturgy: </label>
                                     <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_thaumaturgy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[4]"/>
@@ -235,12 +235,13 @@
                                 <div ng-repeat="spell in player.spells" class="col-sm-3">
                                     <p class="form-control text-center">{{spells[spell]}}</p>
                                 </div>
-                                <label for="{{player.playerNum}}_spell_select"><h5>Add spell:</h5></label>
+                                <label for="{{player.playerNum}}_spell_select"><h5>Spell list:</h5></label>
                                 <div class="input-group"> 
                                     <select class="form-select w-50" id="{{player.playerNum}}_spell_select">
                                         <option ng-repeat="s in spells track by $index" ng-if="!['None', 'Arthropod Form', 'Spray Web'].includes(s)">{{s}}</option>
                                     </select>
                                     <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_spell_button" value="Add spell" ng-click="addSpell()"/>
+                                    <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_spell_button" value="Remove spell" ng-click="removeSpell()"/>
                                 </div>
                             </div>
                         </div>
