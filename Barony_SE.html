@@ -60,6 +60,8 @@
                             <h3>{{player.stats.name ? player.stats.name : "Player " + (player.playerNum + 1)}}</h3>
                             <div class="row">
                                 <h4>General stats</h4>
+                                <p><i>It's probably better to set experience instead of level to level up dynamically (100 per level, level possibly capped to 255). Setting race/class does not change equipment, spells, etc, but may have other effects.</i></p>
+                                <p><b><i>Setting your character to an expansion class or race that you do not own/have installed will probably break something - be warned!</i></b></p>
                                 <div class="col-sm-4 form-group">
                                     <label for="{{player.playerNum}}_name" class="form-label">Name: </label>
                                     <input name="player{{player.playerNum}}" id="{{player.playerNum}}_name" type="text" class="form-control" ng-model="player.stats.name"/>
@@ -80,10 +82,34 @@
                                     <label for="{{player.playerNum}}_hunger" class="form-label">Hunger: </label>
                                     <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hunger" type="number" class="form-control" ng-model="player.stats.HUNGER"/>
                                 </div>
+                                <div class="col-sm-1 form-group">
+                                    <label for="{{player.playerNum}}_class" class="form-label">Sex: </label>
+                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="1" class="form-control" ng-model="player.stats.sex"/>
+                                </div>
+                                <div class="col-sm-3 align-bottom">
+                                    <label class="form-label">Sex type:</label>
+                                    <div class="form-control">{{sexes[player.stats.sex]}}</div>
+                                </div>  
+                                <div class="col-sm-1 form-group">
+                                    <label for="{{player.playerNum}}_race" class="form-label">Race: </label>
+                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_race" type="number" min="0" max="17" class="form-control" ng-model="player.race"/>
+                                </div>
+                                <div class="col-sm-3 align-bottom">
+                                    <label class="form-label">Race name:</label>
+                                    <div class="form-control">{{races[player.race]}}</div>
+                                </div>
+                                <div class="col-sm-1 form-group">
+                                    <label for="{{player.playerNum}}_class" class="form-label">Class: </label>
+                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="25" class="form-control" ng-model="player.char_class"/>
+                                </div>
+                                <div class="col-sm-3 align-bottom">
+                                    <label class="form-label">Class name:</label>
+                                    <div class="form-control">{{classes[player.char_class]}}</div>
+                                </div>
                             </div>
                             <div class="row mt-3">
                                 <h4>Attributes</h4>
-                                <p><i>Attributes, higher is better what else can I say? (Integers)</i></p>
+                                <p><i>Attributes, higher is better what else can I say? (Integers, possibly limited to 255?)</i></p>
                                 <div class="col-sm-2 form-group">
                                     <label for="{{player.playerNum}}_str" class="form-label">Strength: </label>
                                     <input name="player{{player.playerNum}}" id="{{player.playerNum}}_str" type="number" class="form-control" ng-model="player.stats.STR"/>
@@ -127,7 +153,7 @@
                             </div>
                             <div class="row mt-3">
                                 <h4>Proficiencies</h4>
-                                <p>Proficiencies go from 0-100 (integer). Game may crash if a Goblin has 100 in either Magic or Casting!</p>
+                                <p><i>Proficiencies go from 0-100 (integer).</i></p>
                                 <div class="col-sm-3 form-group">
                                     <label for="{{player.playerNum}}_thaumaturgy" class="form-label">Thaumaturgy: </label>
                                     <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_thaumaturgy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[4]"/>
@@ -205,9 +231,9 @@
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <h4>Spells</h4>
+                                <h4>Spells known</h4>
                                 <div ng-repeat="spell in player.spells" class="col-sm-3">
-                                    <p>{{spells[spell]}}</p>
+                                    <p class="form-control text-center">{{spells[spell]}}</p>
                                 </div>
                                 <label for="{{player.playerNum}}_spell_select"><h5>Add spell:</h5></label>
                                 <div class="input-group"> 

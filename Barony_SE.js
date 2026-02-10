@@ -836,9 +836,125 @@ app.controller('BaronyCtrl', function($scope) {
         "Holy beam"
     ];
 
+    $scope.classes = [
+        "Barbarian",
+        "Warrior",
+        "Healer",
+        "Rogue",
+        "Wanderer",
+        "Cleric",
+        "Merchant",
+        "Wizard",
+        "Arcanist",
+        "Joker",
+        "Sexton",
+        "Ninja",
+        "Monk",
+        "Conjurer",
+        "Accursed",
+        "Mesmer",
+        "Brewer",
+        "Mechanist",
+        "Punisher",
+        "Shaman",
+        "Hunter",
+        "Bard",
+        "Sapper",
+        "Scion",
+        "Hermit",
+        "Paladin"
+    ];
+
+    $scope.races = [
+        "Human",
+        "Skeleton",
+        "Vampire",
+        "Succubus",
+        "Goatman",
+        "Automaton",
+        "Incubus",
+        "Goblin",
+        "Insectoid",
+        "Rat",
+        "Troll",
+        "Spider",
+        "Imp",
+        "Gnome",
+        "Gremlin",
+        "Dryad",
+        "Myconid",
+        "Salamander"
+    ];
+
+    $scope.types = [
+        "nothing",
+        "human",
+        "rat",
+        "goblin",
+        "slime",
+        "troll",
+        "bat",
+        "spider",
+        "ghoul",
+        "skeleton",
+        "scorpion",
+        "imp",
+        "crab",
+        "gnome",
+        "demon",
+        "succubus",
+        "mimic",
+        "lich",
+        "minotaur",
+        "devil",
+        "shopkeeper",
+        "kobold",
+        "scarab",
+        "crystalgolem",
+        "incubus",
+        "vampire",
+        "shadow",
+        "cockatrice",
+        "insectoid",
+        "goatman",
+        "automaton",
+        "lichice",
+        "lichfire",
+        "sentrybot",
+        "spellbot",
+        "gyrobot",
+        "dummybot",
+        "bugbear",
+        "dryad",
+        "myconid",
+        "salamander",
+        "gremlin",
+        "revenant_skull",
+        "minimimic",
+        "monster_adorcised_weapon",
+        "flame_elemental",
+        "hologram",
+        "moth",
+        "earth_elemental",
+        "duck_small",
+        "monster_unused_6",
+        "monster_unused_7",
+        "monster_unused_8"
+    ];
+
+    $scope.sexes = [
+        "Male",
+        "Female"
+    ];
+
 
     // Export as file
     $scope.export = function() {
+        // Correctly set race and type flags
+        for (let i=0;i<$scope.players.length;i++) {
+            $scope.players[i].stats.type = $scope.types.indexOf($scope.races[$scope.players[i].race].toLowerCase());
+            $scope.players[i].stats.MISC_FLAGS[4] = $scope.players[i].race;
+        }
         let thisDL = document.createElement("a");
         thisDL.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify($scope.saveData)));
         thisDL.download = document.getElementById("file-input").files[0].name;
