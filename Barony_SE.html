@@ -238,10 +238,58 @@
                                 <label for="{{player.playerNum}}_spell_select"><h5>Spell list:</h5></label>
                                 <div class="input-group"> 
                                     <select class="form-select w-50" id="{{player.playerNum}}_spell_select">
-                                        <option ng-repeat="s in spells track by $index" ng-if="!['None', 'Arthropod Form', 'Spray Web'].includes(s)">{{s}}</option>
+                                        <option ng-repeat="s in spellsSorted track by $index" ng-if="!['None', 'Arthropod Form', 'Spray Web'].includes(s)">{{s}}</option>
                                     </select>
                                     <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_spell_button" value="Add spell" ng-click="addSpell()"/>
                                     <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_spell_button" value="Remove spell" ng-click="removeSpell()"/>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <h4>Carried inventory</h4>
+                                <h5>Add/Remove items from carried inventory:</h5>
+                                <i>
+                                    Most are self explanatory, but good to know: 
+                                    <ul>
+                                        <li>Setting a positive bonus blesses an item, and a negative bonus will curse an item</li>
+                                        <li>Adding more than one of the same type of gear will make the game think they are all the same until you drop/pick up the items</li>
+                                        <li>To remove an item, make sure amount, quality, item, and bonus match exactly what you're trying to remove (removes one at a time)</li>
+                                    </ul>
+                                </i>
+                                <div class="input-group row">
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_item_amount" class="form-label align-self-center">Amount:</label>
+                                        <input class="form-control" type="number" min="1" value="1" id="{{player.playerNum}}_item_amount"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_item_quality_select" class="form-label align-self-center">Quality:</label>
+                                        <select class="form-select" id="{{player.playerNum}}_item_quality_select">
+                                            <option ng-if="q != 'Excellent'" ng-repeat="q in quality">{{q}}</option>
+                                            <option ng-if="q == 'Excellent'" ng-repeat="q in quality" selected>{{q}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-5 form-group">
+                                        <label for="{{player.playerNum}}_item_select" class="form-label align-self-center">Item:</label>
+                                        <select class="form-select" id="{{player.playerNum}}_item_select">
+                                            <option ng-repeat="i in itemsSorted">{{i}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_item_bonus" class="form-label align-self-center">Bonus (+/-):</label>
+                                        <input class="form-control" type="number" value="0" id="{{player.playerNum}}_item_bonus"/>
+                                    </div>
+                                </div>
+                                <div class="input-group justify-content-center">
+                                    <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_item_button" value="Add item" ng-click="addItem()"/>
+                                    <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_item_button" value="Remove item" ng-click="removeItem()"/>
+                                </div>
+                                <h5>Items in carried inventory:</h5>
+                                <i>This is what is in your carried inventory, written as: "amount" "quality" "item" "(bonus)".</i> 
+                                <i>Please forgive that the quality-prefix doesn't match the in-game description other than for equipment.</i>
+                                <i>There are 30 inventory slots in total (not counting backpack slots if present), which is enough to overburden most if not careful.</i>
+                                <div class="row">
+                                    <div ng-repeat="item in player.stats.inventory" ng-if="item.x != -9999 && item.type != 162" class="col-sm-3">
+                                        <p class="form-control text-center">{{item.count + " " + quality[item.status] + " " + items[item.type] + " (" + item.beatitude + ")"}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
