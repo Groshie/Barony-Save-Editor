@@ -6,11 +6,12 @@
 <h2>What can it do?</h2>
 <ul>
   <li>Change game information (dungeon level, game seed, map seed)</li>
-  <li>Change general stats (name, gold, hunger, etc.)</li>
+  <li>Change general stats (name, gold, hunger, class, etc.)</li>
   <li>Change attributes (strength, agility, max hp, etc.)</li>
   <li>Change proficiencies (thaumaturgy, blocking, sword, etc.)</li>
   <li>Toggle status effects or set timers for them (drunk, magic resist, strength, etc.)</li>
-  <li>Add spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
+  <li>Add and remove spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
+  <li>Add and remove items from a player character's carried inventory.</li>
 </ul>
 
 <h2>Screenshots</h2>
@@ -23,7 +24,8 @@
 
 <h2>Known issues</h2>
 <ul>
-  <li>Adding the effect "Telepath" may render your held items invisible when loading the game. A workaround for this is to swap items back and forth using the hotbar (so make sure you have your held items on the hotbar!), this seems to have to do with the game's code and not this tool so it's not something I can fix unfortunately.</li>
+  <li>Minor: Adding the effect "Telepath" may render your held items invisible when loading the game. A workaround for this is to swap items back and forth using the hotbar (so make sure you have your held items on the hotbar!), this seems to have to do with the game's code and not this tool so it's not something I can fix unfortunately.</li>
+  <li>Minor: Adding multiple items of the same type may cause the game to treat them as if they are the same item (like, 19 amulets - 1 is worn but every amulet shows the "worn" symbol). A workaround for this is to drop the items on the ground and then pick them up again, as this seems to reset the behaviour.</li>
 </ul>
 
 <h2>Disclaimers</h2>
