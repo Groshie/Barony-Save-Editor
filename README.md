@@ -25,8 +25,9 @@
 
 <h2>Known issues</h2>
 <ul>
-  <li>Minor: Adding the effect "Telepath" may render your held items invisible when loading the game. A workaround for this is to swap items back and forth using the hotbar (so make sure you have your held items on the hotbar!), this seems to have to do with the game's code and not this tool so it's not something I can fix unfortunately.</li>
-  <li>Minor: Adding multiple items of the same type may cause the game to treat them as if they are the same item (like, 19 amulets - 1 is worn but every amulet shows the "worn" symbol). A workaround for this is to drop the items on the ground and then pick them up again, as this seems to reset the behaviour.</li>
+  <li><b>Minor:</b> Adding the effect "Telepath" may render your held items invisible when loading the game. A workaround for this is to swap items back and forth using the hotbar (so make sure you have your held items on the hotbar!), this seems to have to do with the game's code and not this tool so it's not something I can fix unfortunately.</li>
+  <li><b>Minor:</b> Adding multiple items of the same type may cause the game to treat them as if they are the same item (like, 19 amulets - 1 is worn but every amulet shows the "worn" symbol). A workaround for this is to drop the items on the ground and then pick them up again, as this seems to reset the behaviour.</li>
+  <li><b>Minor:</b> When creating a new save file from scratch using the tool with a game hash, game key, or lobby key that isn't valid will reset the file. A possible workaround would be to use values from one of your existing save files.</li>
 </ul>
 
 <h2>Disclaimers</h2>
