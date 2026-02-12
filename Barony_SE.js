@@ -5,46 +5,431 @@ window.onload = () => {
 
 const app = angular.module('Barony_SE', []);
 app.controller('BaronyCtrl', function($scope) {
-    $scope.load = function() {
-        console.log("Started")
-        let thisSave = document.getElementById("file-input").files[0];
-
-        if (!thisSave) {
-            console.log("No save file uploaded!");
-            return
-        }
-
-        let fileReader = new FileReader();
-
-        let thisJSON = {};
-        
-        fileReader.onload = function() {
-            try {
-                thisJSON = JSON.parse(fileReader.result);
-                console.log("Valid save file.")
-            } catch (error) {
-                if (error) {
-                    console.log("Not a valid save file!");
-                    return
-                } 
-            }
-
-            thisJSON.players[0].playerNum = 0;
-            thisJSON.players[1].playerNum = 1;
-            thisJSON.players[2].playerNum = 2;
-            thisJSON.players[3].playerNum = 3;
-
-            $scope.saveData = thisJSON;
-            $scope.players = [thisJSON.players[0], thisJSON.players[1], thisJSON.players[2], thisJSON.players[3]];
-            $scope.$apply();
-        };
-
-        fileReader.readAsText(thisSave);
-
-        for (let i = 0; i < $scope.players; i++) {
-            delete $scope.players[i].playerNum;
-        }
-        return
+    $scope.newGame = {
+        "magic_cookie": "BARONYJSONSAVE",
+        "game_version": 501,
+        "timestamp": "2026-01-01 00-00-00",
+        "hash": 0,
+        "game_name": "New Game",
+        "gamekey": 0,
+        "lobbykey": 0,
+        "mapseed": 0,
+        "gametimer": 100,
+        "svflags": 146,
+        "player_num": 0,
+        "multiplayer_type": 0,
+        "dungeon_lvl": 0,
+        "level_track": 0,
+        "customseed": 0,
+        "customseed_string": "",
+        "players_connected": [1, 0, 0, 0],
+        "players": [{
+            "char_class": 0,
+            "race": 0,
+            "kills": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "race": 0,
+            "conduct_penniless": true,
+            "conduct_foodless": true,
+            "conduct_vegetarian": true,
+            "conduct_illiterate": true,
+            "additional_conducts": [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar": [1, 2, 8, 6, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295],
+            "hotbar_alternate": [[4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295], [4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295], [4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295], [4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295], [4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295]],
+            "selected_spell": 4294967295,
+            "selected_spell_alternate": [4294967295, 4294967295, 4294967295, 4294967295, 4294967295],
+            "selected_spell_last_appearance": -1,
+            "spells": [],
+            "recipes": [],
+            "scrolls": [],
+            "stats": {
+                "name": "New Character",
+                "type": 1,
+                "sex": 0,
+                "appearance": 0,
+                "HP": 40,
+                "maxHP": 40,
+                "MP": 20,
+                "maxMP": 20,
+                "STR": 2,
+                "DEX": 0,
+                "CON": 1,
+                "INT": -2,
+                "PER": 0,
+                "CHR": -1,
+                "EXP": 0,
+                "LVL": 1,
+                "GOLD": 0,
+                "HUNGER": 1000,
+                "PROFICIENCIES": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 50, 0, 25, 20, 10],
+                "EFFECTS": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "EFFECTS_TIMERS": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "EFFECTS_ACCRETION_TIME": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "MISC_FLAGS": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "player_equipment": [{
+                    "first": "helmet",
+                    "second": 3
+                }, {
+                    "first": "breastplate",
+                    "second": 4294967295
+                }, {
+                    "first": "gloves",
+                    "second": 4294967295
+                }, {
+                    "first": "shoes",
+                    "second": 4294967295
+                }, {
+                    "first": "shield",
+                    "second": 2
+                }, {
+                    "first": "weapon",
+                    "second": 1
+                }, {
+                    "first": "cloak",
+                    "second": 4294967295
+                }, {
+                    "first": "amulet",
+                    "second": 4294967295
+                }, {
+                    "first": "ring",
+                    "second": 0
+                }, {
+                    "first": "mask",
+                    "second": 4294967295
+                }],
+                "npc_equipment": [],
+                "inventory": [{
+                    "type": 96,
+                    "status": 2,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": -9999,
+                    "y": -9999
+                }, {
+                    "type": 10,
+                    "status": 3,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": -9999,
+                    "y": -9999
+                }, {
+                    "type": 0,
+                    "status": 3,
+                    "appearance": 1,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": -9999,
+                    "y": -9999
+                }, {
+                    "type": 44,
+                    "status": 2,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": -9999,
+                    "y": -9999
+                }, {
+                    "type": 154,
+                    "status": 3,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 2,
+                    "identified": true,
+                    "x": 0,
+                    "y": 1
+                }, {
+                    "type": 158,
+                    "status": 3,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": 0,
+                    "y": 2
+                }, {
+                    "type": 148,
+                    "status": 2,
+                    "appearance": 0,
+                    "beatitude": 0,
+                    "count": 2,
+                    "identified": true,
+                    "x": 4,
+                    "y": 1
+                }, {
+                    "type": 54,
+                    "status": 4,
+                    "appearance": 2,
+                    "beatitude": 0,
+                    "count": 1,
+                    "identified": true,
+                    "x": 0,
+                    "y": 0
+                }, {
+                    "type": 191,
+                    "status": 1,
+                    "appearance": 1,
+                    "beatitude": 0,
+                    "count": 2,
+                    "identified": true,
+                    "x": 4,
+                    "y": 0
+                }],
+                "void_chest_inventory": [],
+                "attributes": [],
+                "lootbags": []
+            },
+            "followers": [],
+            "game_statistics": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "shopkeeper_hostility": [{
+                "first": 1,
+                "second": {
+                    "wanted_level": 0,
+                    "player_race": 1,
+                    "equipment": 0,
+                    "type": 1,
+                    "sex": 1,
+                    "player": 0,
+                    "num_aggressions": 0,
+                    "num_kills": 0,
+                    "num_accessories": 0
+                }
+                }],
+            "compendium_item_events": [{
+                "first": "DISTANCE_MAX_RUN",
+                "second": [3001, 472]
+                }, {
+                "first": "LEVELS_MAX_COMPLETION",
+                "second": [2000, 751]
+                }, {
+                "first": "LEVELS_MIN_COMPLETION",
+                "second": [2000, 751]
+                }, {
+                "first": "RUNS_COLLECTED",
+                "second": [0, 1, 10, 1, 44, 1, 54, 1, 96, 1, 148, 1, 154, 1, 158, 1, 191, 1]
+                }],
+            "item_degrade_rng": [],
+            "sustained_mp_used_sorcery": 0,
+            "sustained_mp_used_mysticism": 0,
+            "sustained_mp_used_thaumaturgy": 0,
+            "base_mp_used_sorcery": 0,
+            "base_mp_used_mysticism": 0,
+            "base_mp_used_thaumaturgy": 0,
+            "learned_spells": [],
+            "ducks_in_a_row": [],
+            "favorite_books_achievement": [],
+            "sustained_spell_id_counters": [],
+            "escalating_rng_rolls": [],
+            "escalating_spell_rng_rolls": [],
+            "appraisal_time_progress": []
+            }, {
+            "char_class": 0,
+            "race": 0,
+            "kills": [],
+            "race": 0,
+            "conduct_penniless": false,
+            "conduct_foodless": false,
+            "conduct_vegetarian": false,
+            "conduct_illiterate": false,
+            "additional_conducts": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar_alternate": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+            "selected_spell": 0,
+            "selected_spell_alternate": [0, 0, 0, 0, 0],
+            "selected_spell_last_appearance": 0,
+            "spells": [],
+            "recipes": [],
+            "scrolls": [],
+            "stats": {
+                "name": "",
+                "type": 1,
+                "sex": 0,
+                "appearance": 0,
+                "HP": 0,
+                "maxHP": 0,
+                "MP": 0,
+                "maxMP": 0,
+                "STR": 0,
+                "DEX": 0,
+                "CON": 0,
+                "INT": 0,
+                "PER": 0,
+                "CHR": 0,
+                "EXP": 0,
+                "LVL": 0,
+                "GOLD": 0,
+                "HUNGER": 0,
+                "PROFICIENCIES": [],
+                "EFFECTS": [],
+                "EFFECTS_TIMERS": [],
+                "EFFECTS_ACCRETION_TIME": [],
+                "MISC_FLAGS": [],
+                "player_equipment": [],
+                "npc_equipment": [],
+                "inventory": [],
+                "void_chest_inventory": [],
+                "attributes": [],
+                "lootbags": []
+            },
+            "followers": [],
+            "game_statistics": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "shopkeeper_hostility": [],
+            "compendium_item_events": [],
+            "item_degrade_rng": [],
+            "sustained_mp_used_sorcery": 0,
+            "sustained_mp_used_mysticism": 0,
+            "sustained_mp_used_thaumaturgy": 0,
+            "base_mp_used_sorcery": 0,
+            "base_mp_used_mysticism": 0,
+            "base_mp_used_thaumaturgy": 0,
+            "learned_spells": [],
+            "ducks_in_a_row": [],
+            "favorite_books_achievement": [],
+            "sustained_spell_id_counters": [],
+            "escalating_rng_rolls": [],
+            "escalating_spell_rng_rolls": [],
+            "appraisal_time_progress": []
+            }, {
+            "char_class": 0,
+            "race": 0,
+            "kills": [],
+            "race": 0,
+            "conduct_penniless": false,
+            "conduct_foodless": false,
+            "conduct_vegetarian": false,
+            "conduct_illiterate": false,
+            "additional_conducts": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar_alternate": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+            "selected_spell": 0,
+            "selected_spell_alternate": [0, 0, 0, 0, 0],
+            "selected_spell_last_appearance": 0,
+            "spells": [],
+            "recipes": [],
+            "scrolls": [],
+            "stats": {
+                "name": "",
+                "type": 1,
+                "sex": 0,
+                "appearance": 0,
+                "HP": 0,
+                "maxHP": 0,
+                "MP": 0,
+                "maxMP": 0,
+                "STR": 0,
+                "DEX": 0,
+                "CON": 0,
+                "INT": 0,
+                "PER": 0,
+                "CHR": 0,
+                "EXP": 0,
+                "LVL": 0,
+                "GOLD": 0,
+                "HUNGER": 0,
+                "PROFICIENCIES": [],
+                "EFFECTS": [],
+                "EFFECTS_TIMERS": [],
+                "EFFECTS_ACCRETION_TIME": [],
+                "MISC_FLAGS": [],
+                "player_equipment": [],
+                "npc_equipment": [],
+                "inventory": [],
+                "void_chest_inventory": [],
+                "attributes": [],
+                "lootbags": []
+            },
+            "followers": [],
+            "game_statistics": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "shopkeeper_hostility": [],
+            "compendium_item_events": [],
+            "item_degrade_rng": [],
+            "sustained_mp_used_sorcery": 0,
+            "sustained_mp_used_mysticism": 0,
+            "sustained_mp_used_thaumaturgy": 0,
+            "base_mp_used_sorcery": 0,
+            "base_mp_used_mysticism": 0,
+            "base_mp_used_thaumaturgy": 0,
+            "learned_spells": [],
+            "ducks_in_a_row": [],
+            "favorite_books_achievement": [],
+            "sustained_spell_id_counters": [],
+            "escalating_rng_rolls": [],
+            "escalating_spell_rng_rolls": [],
+            "appraisal_time_progress": []
+            }, {
+            "char_class": 0,
+            "race": 0,
+            "kills": [],
+            "race": 0,
+            "conduct_penniless": false,
+            "conduct_foodless": false,
+            "conduct_vegetarian": false,
+            "conduct_illiterate": false,
+            "additional_conducts": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "hotbar_alternate": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+            "selected_spell": 0,
+            "selected_spell_alternate": [0, 0, 0, 0, 0],
+            "selected_spell_last_appearance": 0,
+            "spells": [],
+            "recipes": [],
+            "scrolls": [],
+            "stats": {
+                "name": "",
+                "type": 1,
+                "sex": 0,
+                "appearance": 0,
+                "HP": 0,
+                "maxHP": 0,
+                "MP": 0,
+                "maxMP": 0,
+                "STR": 0,
+                "DEX": 0,
+                "CON": 0,
+                "INT": 0,
+                "PER": 0,
+                "CHR": 0,
+                "EXP": 0,
+                "LVL": 0,
+                "GOLD": 0,
+                "HUNGER": 0,
+                "PROFICIENCIES": [],
+                "EFFECTS": [],
+                "EFFECTS_TIMERS": [],
+                "EFFECTS_ACCRETION_TIME": [],
+                "MISC_FLAGS": [],
+                "player_equipment": [],
+                "npc_equipment": [],
+                "inventory": [],
+                "void_chest_inventory": [],
+                "attributes": [],
+                "lootbags": []
+            },
+            "followers": [],
+            "game_statistics": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "shopkeeper_hostility": [],
+            "compendium_item_events": [],
+            "item_degrade_rng": [],
+            "sustained_mp_used_sorcery": 0,
+            "sustained_mp_used_mysticism": 0,
+            "sustained_mp_used_thaumaturgy": 0,
+            "base_mp_used_sorcery": 0,
+            "base_mp_used_mysticism": 0,
+            "base_mp_used_thaumaturgy": 0,
+            "learned_spells": [],
+            "ducks_in_a_row": [],
+            "favorite_books_achievement": [],
+            "sustained_spell_id_counters": [],
+            "escalating_rng_rolls": [],
+            "escalating_spell_rng_rolls": [],
+            "appraisal_time_progress": []
+            }],
+        "additional_data": [],
+        "map_messages": []
     };
 
     $scope.proficiencies = [
@@ -1475,21 +1860,135 @@ app.controller('BaronyCtrl', function($scope) {
         "Spellbook holy beam",
         "Spellbook dominate"
     ];
-
     $scope.itemsSorted = [... $scope.items].sort();
-
     $scope.quality = ["Destroyed", "Decrepit", "Worn", "Serviceable", "Excellent"];
 
+
+    // Function for loading a saved game
+    $scope.load = function() {
+        console.log("Started");
+        let thisSave = document.getElementById("file-input").files[0];
+
+        if (!thisSave) {
+            console.log("No save file uploaded!");
+            return
+        }
+
+        let fileReader = new FileReader();
+
+        let thisJSON = {};
+        
+        fileReader.onload = function() {
+            try {
+                thisJSON = JSON.parse(fileReader.result);
+                console.log("Valid save file.")
+            } catch (error) {
+                if (error) {
+                    console.log("Not a valid save file!");
+                    return
+                } 
+            }
+
+            thisJSON.players[0].playerNum = 0;
+            thisJSON.players[1].playerNum = 1;
+            thisJSON.players[2].playerNum = 2;
+            thisJSON.players[3].playerNum = 3;
+
+            $scope.saveData = thisJSON;
+            $scope.players = [thisJSON.players[0], thisJSON.players[1], thisJSON.players[2], thisJSON.players[3]];
+            $scope.$apply();
+        };
+
+        fileReader.readAsText(thisSave);
+        return
+    };
+
+    // Function for loading a newly created save game
+    $scope.loadNew = function() {
+        console.log("Started");
+        $scope.saveData =  structuredClone($scope.newGame);
+        $scope.saveData.players[0].playerNum = 0;
+        $scope.saveData.gamekey = $scope.generateNumber(10);
+        $scope.saveData.hash = $scope.generateNumber(10);
+        $scope.saveData.lobbykey = $scope.generateNumber(10);
+        $scope.saveData.mapseed = $scope.generateNumber(9);
+        return
+    }
+
+    // Function for generating a number of n length
+    $scope.generateNumber = function(n) {
+        let num = "";
+        for (let i = 0;i<(n);i++) {
+            num = num + Math.round(Math.random()*10).toString();
+        }
+        return parseInt(num)
+    }
+
+
+    // Function for adding player to object
+    $scope.addPlayer = function() {
+        let players = $scope.saveData.players;
+        let playersConnected = $scope.saveData.players_connected;
+
+        if (players.filter(p => p.stats.name != "").length > 3) {
+            console.log("Player maximum is four, maximum already reached. Player not added.");
+            return
+        }
+
+        let freeSlot = players.map(p => p.stats.name != "").indexOf(false);
+        players[freeSlot] = structuredClone($scope.newGame.players[0]);
+        players[freeSlot].stats.name = "Player " + (freeSlot + 1);
+        players[freeSlot].playerNum = freeSlot;
+
+        if (!playersConnected[freeSlot]) {
+            playersConnected[freeSlot] = 1;
+        }
+        return
+    }
+
+    // Function for removing a player from object
+    $scope.removePlayer = function() {
+        let players = $scope.saveData.players;
+        let playersConnected = $scope.saveData.players_connected;
+
+        if (players.filter(p => p.stats.name == "").length > 2) {
+            console.log("Player minimum is one, minimum already reached. Player not removed.");
+            return
+        }
+
+        let freeSlot = 0;
+        
+        for (freeSlot;freeSlot < players.length;freeSlot++) {
+            if (players[freeSlot].stats.name == "") {
+                break
+            }
+        }
+
+        freeSlot--
+        players[freeSlot] = structuredClone($scope.newGame.players[1]);
+
+        if (playersConnected[freeSlot]) {
+            playersConnected[freeSlot] = 0;
+        }
+        return
+    }
 
     // Export as file
     $scope.export = function() {
         // Correctly set race and type flags
-        for (let i=0;i<$scope.players.length;i++) {
-            $scope.players[i].stats.type = $scope.types.indexOf($scope.races[$scope.players[i].race].toLowerCase());
-            $scope.players[i].stats.MISC_FLAGS[4] = $scope.players[i].race;
+        for (let i=0;i<$scope.saveData.players.length;i++) {
+            $scope.saveData.players[i].stats.type = $scope.types.indexOf($scope.races[$scope.saveData.players[i].race].toLowerCase());
+            $scope.saveData.players[i].stats.MISC_FLAGS[4] = $scope.saveData.players[i].race;
         }
+
+        let copyData = structuredClone($scope.saveData);
+
+        for (let i=0;i<copyData.players.length;i++) {
+            delete copyData.players[i].playerNum;
+        }
+
         let thisDL = document.createElement("a");
-        thisDL.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify($scope.saveData)));
+        thisDL.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(copyData)));
         thisDL.download = document.getElementById("file-input").files[0].name;
         thisDL.click();
         thisDL.remove();
@@ -1573,6 +2072,7 @@ app.controller('BaronyCtrl', function($scope) {
         return
     }
 
+    // Function for getting player's carried inventory sorted and next empty slot
     $scope.getCarriedInventory = function (inventory) {
         let cachedInventory = [
             [0, 0, 0, 0, 0],
@@ -1602,6 +2102,7 @@ app.controller('BaronyCtrl', function($scope) {
         return [cachedInventory, firstEmpty]
     }
 
+    // Function for adding item to player's carried inventory
     $scope.addItem = function () {
         let thisAmount = document.getElementById(event.srcElement.id[0] + "_item_amount").value;
         let thisQuality = document.getElementById(event.srcElement.id[0] + "_item_quality_select").value;
@@ -1634,6 +2135,7 @@ app.controller('BaronyCtrl', function($scope) {
         return
     }
 
+    // Function for removing item from player's carried inventory
     $scope.removeItem = function () {
         let thisAmount = document.getElementById(event.srcElement.id[0] + "_item_amount").value;
         let thisQuality = document.getElementById(event.srcElement.id[0] + "_item_quality_select").value;
@@ -1664,6 +2166,5 @@ app.controller('BaronyCtrl', function($scope) {
         }
         return
     }
-
     return
 });

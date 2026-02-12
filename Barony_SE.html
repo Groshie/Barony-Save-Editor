@@ -23,9 +23,10 @@
                     </div>
                 </div>
                 <div class="row ms-5" id="app-div">
-                    <div class="col-sm-12">
-                        <p><b>Before you start:</b> It is recommended that you also back your savegame up to another folder, just in case!</p>
-                        <p>Begin by selecting the savegame you wish to edit using the control below, then click the button to load it.</p>
+                    <div class="col-sm-8">
+                        <b>Before you start:</b> 
+                        <p>This editor does not change your original save file, but it is still recommended that you back your original save file up to another folder just in case so you don't overwrite it by accident!</p>
+                        <p>Begin by selecting the savegame you wish to edit using the control below, then click the button to load it. Or create a new save file using the other button.</p>
                         <p>Tested on Barony version 5.01 (Steam)</p>
                         <p><i>Note: Saved games are usually located within the game folder (..\Barony\savegames\)</i></p>
                     </div>
@@ -35,25 +36,76 @@
                     </div>
                     <div class="col-sm-12 m-1">
                         <input type="button" class="btn btn-primary" ng-click="load()" value="Load save file"/>
+                         OR 
+                        <input type="button" class="btn btn-primary" ng-click="loadNew()" value="Create new save file"/>
                     </div>
                     <div class="col-sm-12 mt-1">
-                        <p>Once you have loaded your game, you should see a table of values that you can edit below.</p>
+                        <p>Once you have loaded/created your game, you should see a table of values that you can edit below.</p>
                         <p>Edit the values, then click the button at the bottom of the page to export your new save file!</p>
                     </div>
                     <div ng-if="saveData" class="container mt-1 w-100">
                         <div class="row mt-3">
                             <h4>General game information</h4>
+                            <i>Editing some of these without knowing what you are doing will probably corrupt the save file (resetting to character creation may happen).</i>
+                            <i>"Game Key", "Lobby Key", and "Game Hash" may be unique to your game so use the values from one of your saved games or it probably won't work.</i>
+                            <div class="col-sm-3 form-group">
+                                <label for="game-name" class="form-label">Game Name: </label>
+                                <input name="game-info" id="game-name" class="form-control" ng-model="saveData.game_name"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="game-hash" class="form-label">Game Hash: </label>
+                                <input name="game-info" id="game-hash" class="form-control" ng-model="saveData.hash"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="game-key" class="form-label">Game Key: </label>
+                                <input name="game-info" id="game-key" class="form-control" ng-model="saveData.gamekey"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="game-lobby-key" class="form-label">Game Lobby Key: </label>
+                                <input name="game-info" id="game-lobby-key" class="form-control" ng-model="saveData.lobbykey"/>
+                            </div>
+                            <div class="col-sm-1 form-group">
+                                <label for="game-level-track" class="form-label">Level Track: </label>
+                                <input name="game-info" id="game-level-track" class="form-control" ng-model="saveData.level_track"/>
+                            </div>
                             <div class="col-sm-2 form-group">
                                 <label for="dungeon-level" class="form-label">Dungeon Level: </label>
                                 <input name="game-info" id="dungeon-level" type="number" min="0" max="35" class="form-control" ng-model="saveData.dungeon_lvl"/>
                             </div>
-                            <div class="col-sm-5 form-group">
-                                <label for="game-seed" class="form-label">Game Seed: </label>
-                                <input name="game-info" id="game-seed" type="number" class="form-control" ng-model="saveData.gamekey"/>
-                            </div>
-                            <div class="col-sm-5 form-group">
+                            <div class="col-sm-3 form-group">
                                 <label for="map-seed" class="form-label">Map Seed: </label>
                                 <input name="game-info" id="map-seed" type="text" class="form-control" ng-model="saveData.mapseed"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="custom-seed" class="form-label">Custom Seed: </label>
+                                <input name="game-info" id="custom-seed" type="number" class="form-control" ng-model="saveData.customseed"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="custom-seed-string" class="form-label">Custom Seed String: </label>
+                                <input name="game-info" id="custom-seed-string" class="form-control" ng-model="saveData.customseed_string"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label for="multiplayer-type" class="form-label">Multiplayer? </label>
+                                <input name="game-info" id="multiplayer-type" type="number" min="0" max="3" class="form-control" ng-model="saveData.multiplayer_type"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label for="multiplayer-type-name" class="form-label">Multiplayer Type: </label>
+                                <p name="game-info" id="multiplayer-type-name" class="form-control">{{["None", "Online", "Local", "LAN"][saveData.multiplayer_type]}}</p>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <div class="form-label w-100">Players connected: </div>
+                                1: <input disabled name="game-info" id="players_connected_1_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[0]}}" ng-model="saveData.players_connected[0]" ng-true-value="1" ng-false-value="0"/>
+                                2: <input disabled name="game-info" id="players_connected_2_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[1]}}" ng-model="saveData.players_connected[1]" ng-true-value="1" ng-false-value="0"/>
+                                3: <input disabled name="game-info" id="players_connected_3_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[2]}}" ng-model="saveData.players_connected[2]" ng-true-value="1" ng-false-value="0"/>
+                                4: <input disabled name="game-info" id="players_connected_4_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[3]}}" ng-model="saveData.players_connected[3]" ng-true-value="1" ng-false-value="0"/>
+                            </div>
+                            <div class="col-sm-2 m-1">
+                                <label class="form-label w-100">Add player: </label>
+                                <input type="button" class="btn btn-primary" ng-click="addPlayer()" value="Add player"/>
+                            </div>
+                            <div class="col-sm-2 m-1">
+                                <label class="form-label w-100">Remove player: </label>
+                                <input type="button" class="btn btn-primary" ng-click="removePlayer()" value="Remove player"/>
                             </div>
                         </div>
                         <div class="row mt-3" ng-repeat="player in saveData.players" ng-if="saveData.players_connected[$index] == 1">
