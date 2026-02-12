@@ -1,17 +1,18 @@
 <h1>Barony Save Editor</h1>
-<p>A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>. Basically, you input your save file into the app, edit values, and then export the new save file.</p>
+<p>A simple webapp for editing savegame-files that can be used for the game <a href="https://www.baronygame.com/">Barony</a>. Basically, you input your save file into the app, edit values, and then export the new save file. You can also create a new save file from scratch, but it's a bit trickier to make it valid.</p>
 <p>Tested for version 5.01 (on Steam), and for versions pre-5.0 you can use the files in the legacy-folder. It's written in html and javascript, and uses Bootstrap 5 and AngularJS.</p>
 <p>You can download it and run it locally in your browser, or <a href="https://groshie.github.io/Barony%20Save%20Editor/Barony_SE.html">use the latest version here</a>!</p>
 
 <h2>What can it do?</h2>
 <ul>
-  <li>Change game information (dungeon level, game seed, map seed)</li>
+  <li>Change game information (single/multiplayer mode, dungeon level, map seed)</li>
   <li>Change general stats (name, gold, hunger, class, etc.)</li>
   <li>Change attributes (strength, agility, max hp, etc.)</li>
   <li>Change proficiencies (thaumaturgy, blocking, sword, etc.)</li>
   <li>Toggle status effects or set timers for them (drunk, magic resist, strength, etc.)</li>
   <li>Add and remove spells (except "Spray Web" and "Arthropod Form" because of duplicates in the game code and I'm lazy - might fix later)</li>
-  <li>Add and remove items from a player character's carried inventory.</li>
+  <li>Add and remove items from a player character's carried inventory</li>
+  <li>Add and remove player characters</li>
 </ul>
 
 <h2>Screenshots</h2>
