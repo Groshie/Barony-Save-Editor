@@ -1,29 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Barony Save Editor</title>
+        <title>Barony Save Editor (BaSE)</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Groshie">
         <meta name="description" content="Savegame editor for the game roguelike game Barony">
         <meta name="keywords" content="Barony, game, editor, save">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <style>
+            .title {
+                font-family: "Manufacturing Consent", system-ui;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 48pt;
+            }
+        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Manufacturing+Consent&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js" crossorigin="anonymous"></script>
         <script src="Barony_SE.js"></script>
     </head>
     <body>
         <div ng-app="Barony_SE" ng_controller="BaronyCtrl" id="barony-div">
             <div class="container-fluid">
-                <div class="row pt-5 ms-5" id="header-div">
-                    <div class="col-sm-12">
-                        <h1>Barony Save Editor</h1>
+                <div class="row pt-5 ms-5 position-sticky top-0 start-0 bg-light text-dark" style="z-index: 1020" id="header-div">
+                    <div class="col-sm-12" name="title">
+                        <h1 class="title">Barony Save Editor (BaSE)</h1>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-7" name="title">
                         <h2>- A simple web-based savegame editor for <a href="https://www.baronygame.com/">Barony</a></h2>
                     </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" value="Help" ng-click="toggleHelp()">Help is {{help ? "ON" : "OFF"}}</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" value="Help" ng-click="toggleDarkMode()">{{dark ? "Night mode" : "Day mode"}}</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">About</button>
+                    </div>
+                    <hr/>
                 </div>
+                <a class="position-fixed top-5 end-0 px-3" ng-click="toggleHeader()">Hide/Unhide</a>
                 <div class="row ms-5" id="app-div">
-                    <div class="col-sm-8">
+                    <div ng-if="help == 1" class="col-sm-8">
                         <b>Before you start:</b> 
                         <p>This editor does not change your original save file, but it is still recommended that you back your original save file up to another folder just in case so you don't overwrite it by accident!</p>
                         <p>Begin by selecting the savegame you wish to edit using the control below, then click the button to load it. Or create a new save file using the other button.</p>
@@ -31,7 +54,7 @@
                         <p><i>Note: Saved games are usually located within the game folder (..\Barony\savegames\)</i></p>
                     </div>
                     <div class="col-sm-12 m-1">
-                        <label for="file-input" class="form-label">File:</label>
+                        <label for="file-input" class="form-label">Upload save file:</label>
                         <input type="file" class="form-control w-25" id="file-input" accept=".baronysave"/>
                     </div>
                     <div class="col-sm-12 m-1">
@@ -39,308 +62,338 @@
                          OR 
                         <input type="button" class="btn btn-primary" ng-click="loadNew()" value="Create new save file"/>
                     </div>
-                    <div class="col-sm-12 mt-1">
+                    <div ng-if="help == 1" class="col-sm-12 mt-1">
                         <p>Once you have loaded/created your game, you should see a table of values that you can edit below.</p>
                         <p>Edit the values, then click the button at the bottom of the page to export your new save file!</p>
                     </div>
-                    <div ng-if="saveData" class="container mt-1 w-100">
-                        <div class="row mt-3">
-                            <h4>General game information</h4>
-                            <i>Editing some of these without knowing what you are doing will probably corrupt the save file (resetting to character creation may happen).</i>
-                            <i>"Game Key", "Lobby Key", and "Game Hash" may be unique to your game so use the values from one of your saved games or it probably won't work.</i>
-                            <div class="col-sm-3 form-group">
-                                <label for="game-name" class="form-label">Game Name: </label>
-                                <input name="game-info" id="game-name" class="form-control" ng-model="saveData.game_name"/>
+                    <div ng-if="saveData" class="container mt-1 w-100 accordion" id="app-info">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#game-info" aria-expanded="true" aria-controls="game-info">
+                                    <h3>General game information</h3>
+                                </button>
                             </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="game-hash" class="form-label">Game Hash: </label>
-                                <input name="game-info" id="game-hash" class="form-control" ng-model="saveData.hash"/>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="game-key" class="form-label">Game Key: </label>
-                                <input name="game-info" id="game-key" class="form-control" ng-model="saveData.gamekey"/>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="game-lobby-key" class="form-label">Game Lobby Key: </label>
-                                <input name="game-info" id="game-lobby-key" class="form-control" ng-model="saveData.lobbykey"/>
-                            </div>
-                            <div class="col-sm-1 form-group">
-                                <label for="game-level-track" class="form-label">Level Track: </label>
-                                <input name="game-info" id="game-level-track" class="form-control" ng-model="saveData.level_track"/>
-                            </div>
-                            <div class="col-sm-2 form-group">
-                                <label for="dungeon-level" class="form-label">Dungeon Level: </label>
-                                <input name="game-info" id="dungeon-level" type="number" min="0" max="35" class="form-control" ng-model="saveData.dungeon_lvl"/>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="map-seed" class="form-label">Map Seed: </label>
-                                <input name="game-info" id="map-seed" type="text" class="form-control" ng-model="saveData.mapseed"/>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="custom-seed" class="form-label">Custom Seed: </label>
-                                <input name="game-info" id="custom-seed" type="number" class="form-control" ng-model="saveData.customseed"/>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <label for="custom-seed-string" class="form-label">Custom Seed String: </label>
-                                <input name="game-info" id="custom-seed-string" class="form-control" ng-model="saveData.customseed_string"/>
-                            </div>
-                            <div class="col-sm-2 form-group">
-                                <label for="multiplayer-type" class="form-label">Multiplayer? </label>
-                                <input name="game-info" id="multiplayer-type" type="number" min="0" max="3" class="form-control" ng-model="saveData.multiplayer_type"/>
-                            </div>
-                            <div class="col-sm-2 form-group">
-                                <label for="multiplayer-type-name" class="form-label">Multiplayer Type: </label>
-                                <p name="game-info" id="multiplayer-type-name" class="form-control">{{["None", "Online", "Local", "LAN"][saveData.multiplayer_type]}}</p>
-                            </div>
-                            <div class="col-sm-3 form-group">
-                                <div class="form-label w-100">Players connected: </div>
-                                1: <input disabled name="game-info" id="players_connected_1_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[0]}}" ng-model="saveData.players_connected[0]" ng-true-value="1" ng-false-value="0"/>
-                                2: <input disabled name="game-info" id="players_connected_2_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[1]}}" ng-model="saveData.players_connected[1]" ng-true-value="1" ng-false-value="0"/>
-                                3: <input disabled name="game-info" id="players_connected_3_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[2]}}" ng-model="saveData.players_connected[2]" ng-true-value="1" ng-false-value="0"/>
-                                4: <input disabled name="game-info" id="players_connected_4_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[3]}}" ng-model="saveData.players_connected[3]" ng-true-value="1" ng-false-value="0"/>
-                            </div>
-                            <div class="col-sm-2 m-1">
-                                <label class="form-label w-100">Add player: </label>
-                                <input type="button" class="btn btn-primary" ng-click="addPlayer()" value="Add player"/>
-                            </div>
-                            <div class="col-sm-2 m-1">
-                                <label class="form-label w-100">Remove player: </label>
-                                <input type="button" class="btn btn-primary" ng-click="removePlayer()" value="Remove player"/>
-                            </div>
-                        </div>
-                        <div class="row mt-3" ng-repeat="player in saveData.players" ng-if="saveData.players_connected[$index] == 1">
-                            <h3>{{player.stats.name ? player.stats.name : "Player " + (player.playerNum + 1)}}</h3>
-                            <div class="row">
-                                <h4>General stats</h4>
-                                <p><i>It's probably better to set experience instead of level to level up dynamically (100 per level, level possibly capped to 255). Setting race/class does not change equipment, spells, etc, but may have other effects.</i></p>
-                                <p><b><i>Setting your character to an expansion class or race that you do not own/have installed will probably break something - be warned!</i></b></p>
-                                <div class="col-sm-4 form-group">
-                                    <label for="{{player.playerNum}}_name" class="form-label">Name: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_name" type="text" class="form-control" ng-model="player.stats.name"/>
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <label for="{{player.playerNum}}_level" class="form-label">Level: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_level" type="number" class="form-control" ng-model="player.stats.LVL"/>
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <label for="{{player.playerNum}}_exp" class="form-label">Experience: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_exp" type="number" class="form-control" ng-model="player.stats.EXP"/>
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <label for="{{player.playerNum}}_gold" class="form-label">Gold: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_gold" type="number" class="form-control" ng-model="player.stats.GOLD"/>
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <label for="{{player.playerNum}}_hunger" class="form-label">Hunger: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hunger" type="number" class="form-control" ng-model="player.stats.HUNGER"/>
-                                </div>
-                                <div class="col-sm-1 form-group">
-                                    <label for="{{player.playerNum}}_class" class="form-label">Sex: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="1" class="form-control" ng-model="player.stats.sex"/>
-                                </div>
-                                <div class="col-sm-3 align-bottom">
-                                    <label class="form-label">Sex type:</label>
-                                    <div class="form-control">{{sexes[player.stats.sex]}}</div>
-                                </div>  
-                                <div class="col-sm-1 form-group">
-                                    <label for="{{player.playerNum}}_race" class="form-label">Race: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_race" type="number" min="0" max="17" class="form-control" ng-model="player.race"/>
-                                </div>
-                                <div class="col-sm-3 align-bottom">
-                                    <label class="form-label">Race name:</label>
-                                    <div class="form-control">{{races[player.race]}}</div>
-                                </div>
-                                <div class="col-sm-1 form-group">
-                                    <label for="{{player.playerNum}}_class" class="form-label">Class: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="25" class="form-control" ng-model="player.char_class"/>
-                                </div>
-                                <div class="col-sm-3 align-bottom">
-                                    <label class="form-label">Class name:</label>
-                                    <div class="form-control">{{classes[player.char_class]}}</div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <h4>Attributes</h4>
-                                <p><i>Attributes, higher is better what else can I say?</i></p>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_str" class="form-label">Strength: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_str" type="number" class="form-control" ng-model="player.stats.STR"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_dex" class="form-label">Dexterity: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_dex" type="number" class="form-control" ng-model="player.stats.DEX"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_con" class="form-label">Constitution: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_con" type="number" class="form-control" ng-model="player.stats.CON"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_int" class="form-label">Intelligence: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_int" type="number" class="form-control" ng-model="player.stats.INT"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_per" class="form-label">Perception: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_per" type="number" class="form-control" ng-model="player.stats.PER"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_chr" class="form-label">Charisma: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_chr" type="number" class="form-control" ng-model="player.stats.CHR"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_hp" class="form-label">HP: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hp" type="number" class="form-control" ng-model="player.stats.HP"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_maxhp" class="form-label">Max HP: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxhp" type="number" class="form-control" ng-model="player.stats.maxHP"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_mp" class="form-label">MP: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_mp" type="number" class="form-control" ng-model="player.stats.MP"/>
-                                </div>
-                                <div class="col-sm-2 form-group">
-                                    <label for="{{player.playerNum}}_maxmp" class="form-label">Max MP: </label>
-                                    <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxmp" type="number" class="form-control" ng-model="player.stats.maxMP"/>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <h4>Proficiencies</h4>
-                                <p><i>Proficiencies go from 0-100 (integer), higher is better.</i></p>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_thaumaturgy" class="form-label">Thaumaturgy: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_thaumaturgy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[4]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_stealth" class="form-label">Stealth: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_stealth" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[1]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_blocking" class="form-label">Blocking: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_blocking" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[13]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_ranged" class="form-label">Ranged: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_ranged" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[8]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_unarmed" class="form-label">Unarmed: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_unarmed" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[14]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_swords" class="form-label">Swords: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_swords" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[9]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_polearms" class="form-label">Polearms: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_polearms" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[12]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_axes" class="form-label">Axes: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_axes" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[11]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_maces" class="form-label">Maces: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_maces" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[10]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_leadership" class="form-label">Leadership: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_leadership" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[5]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_trading" class="form-label">Trading: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_trading" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[2]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_lore" class="form-label">Lore: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_lore" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[3]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_tinkering" class="form-label">Tinkering: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_tinkering" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[0]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_alchemy" class="form-label">Alchemy: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_alchemy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[15]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_sorcery" class="form-label">Sorcery: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_sorcery" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[7]"/>
-                                </div>
-                                <div class="col-sm-3 form-group">
-                                    <label for="{{player.playerNum}}_mysticism" class="form-label">Mysticism: </label>
-                                    <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_mysticism" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[6]"/>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <h4>Status effects</h4>
-                                <p><i>Check the relevant box if the effect should be ON. Leave the timer at 0 if you want the effect to be on forever!</i></p>
-                                <div ng-repeat="effect in player.stats.EFFECTS track by $index" ng-if="statusEffects[$index]" class="col-sm-4">
-                                    <div class="input-group">
-                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_{{statusEffects[$index][0]}}_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{player.stats.EFFECTS[$index]}}" ng-model="player.stats.EFFECTS[$index]" ng-true-value="1" ng-false-value="0"/>
-                                        <label for="{{player.playerNum}}_{{statusEffects[$index][0]}}" class="form-label w-50 align-self-center">{{statusEffects[$index][1]}}:</label>
-                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_{{statusEffects[$index][0]}}" type="number" class="form-control w-25 align-self-center" ng-model="player.stats.EFFECTS_TIMERS[$index]"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <h4>Spells known</h4>
-                                <div ng-repeat="spell in player.spells" class="col-sm-3">
-                                    <p class="form-control text-center">{{spells[spell]}}</p>
-                                </div>
-                                <label for="{{player.playerNum}}_spell_select"><h5>Spell list:</h5></label>
-                                <div class="input-group"> 
-                                    <select class="form-select w-50" id="{{player.playerNum}}_spell_select">
-                                        <option ng-repeat="s in spellsSorted track by $index" ng-if="!['None', 'Arthropod Form', 'Spray Web'].includes(s)">{{s}}</option>
-                                    </select>
-                                    <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_spell_button" value="Add spell" ng-click="addSpell()"/>
-                                    <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_spell_button" value="Remove spell" ng-click="removeSpell()"/>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <h4>Carried inventory</h4>
-                                <h5>Add/Remove items from carried inventory:</h5>
-                                <i>
-                                    Most are self explanatory, but good to know: 
-                                    <ul>
-                                        <li>Setting a positive bonus blesses an item, and a negative bonus will curse an item</li>
-                                        <li>Adding more than one of the same type of gear will make the game think they are all the same until you drop/pick up the items</li>
-                                        <li>To remove an item, make sure amount, quality, item, and bonus match exactly what you're trying to remove (removes one at a time)</li>
-                                    </ul>
-                                </i>
-                                <div class="input-group row">
-                                    <div class="col-sm-2 form-group">
-                                        <label for="{{player.playerNum}}_item_amount" class="form-label align-self-center">Amount:</label>
-                                        <input class="form-control" type="number" min="1" value="1" id="{{player.playerNum}}_item_amount"/>
+                            <div id="game-info" class="accordion-collapse collapse show" data-bs-parent="#app-info">
+                                <div class="accordion-body row mt-3">
+                                    <div ng-if="help == 1">
+                                        <i>Editing some of these without knowing what you are doing will probably corrupt the save file (resetting to character creation may happen).</i>
+                                        <i>"Game Key", "Lobby Key", and "Game Hash" may be unique to your game so use the values from one of your saved games or it probably won't work.</i>
                                     </div>
                                     <div class="col-sm-3 form-group">
-                                        <label for="{{player.playerNum}}_item_quality_select" class="form-label align-self-center">Quality:</label>
-                                        <select class="form-select" id="{{player.playerNum}}_item_quality_select">
-                                            <option ng-if="q != 'Excellent'" ng-repeat="q in quality">{{q}}</option>
-                                            <option ng-if="q == 'Excellent'" ng-repeat="q in quality" selected>{{q}}</option>
-                                        </select>
+                                        <label for="game-name" class="form-label">Game Name: </label>
+                                        <input name="game-info" id="game-name" class="form-control" ng-model="saveData.game_name"/>
                                     </div>
-                                    <div class="col-sm-5 form-group">
-                                        <label for="{{player.playerNum}}_item_select" class="form-label align-self-center">Item:</label>
-                                        <select class="form-select" id="{{player.playerNum}}_item_select">
-                                            <option ng-repeat="i in itemsSorted">{{i}}</option>
-                                        </select>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="game-hash" class="form-label">Game Hash: </label>
+                                        <input name="game-info" id="game-hash" class="form-control" ng-model="saveData.hash"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="game-key" class="form-label">Game Key: </label>
+                                        <input name="game-info" id="game-key" class="form-control" ng-model="saveData.gamekey"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="game-lobby-key" class="form-label">Game Lobby Key: </label>
+                                        <input name="game-info" id="game-lobby-key" class="form-control" ng-model="saveData.lobbykey"/>
+                                    </div>
+                                    <div class="col-sm-1 form-group">
+                                        <label for="game-level-track" class="form-label">Level Track: </label>
+                                        <input name="game-info" id="game-level-track" class="form-control" ng-model="saveData.level_track"/>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <label for="{{player.playerNum}}_item_bonus" class="form-label align-self-center">Bonus (+/-):</label>
-                                        <input class="form-control" type="number" value="0" id="{{player.playerNum}}_item_bonus"/>
+                                        <label for="dungeon-level" class="form-label">Dungeon Level: </label>
+                                        <input name="game-info" id="dungeon-level" type="number" min="0" max="35" class="form-control" ng-model="saveData.dungeon_lvl"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="map-seed" class="form-label">Map Seed: </label>
+                                        <input name="game-info" id="map-seed" type="text" class="form-control" ng-model="saveData.mapseed"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="custom-seed" class="form-label">Custom Seed: </label>
+                                        <input name="game-info" id="custom-seed" type="number" class="form-control" ng-model="saveData.customseed"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="custom-seed-string" class="form-label">Custom Seed String: </label>
+                                        <input name="game-info" id="custom-seed-string" class="form-control" ng-model="saveData.customseed_string"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="multiplayer-type" class="form-label">Multiplayer? </label>
+                                        <input name="game-info" id="multiplayer-type" type="number" min="0" max="3" class="form-control" ng-model="saveData.multiplayer_type"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="multiplayer-type-name" class="form-label">Multiplayer Type: </label>
+                                        <p name="game-info" id="multiplayer-type-name" class="form-control">{{["None", "Online", "Local", "LAN"][saveData.multiplayer_type]}}</p>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <div class="form-label w-100">Players connected: </div>
+                                        1: <input disabled name="game-info" id="players_connected_1_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[0]}}" ng-model="saveData.players_connected[0]" ng-true-value="1" ng-false-value="0"/>
+                                        2: <input disabled name="game-info" id="players_connected_2_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[1]}}" ng-model="saveData.players_connected[1]" ng-true-value="1" ng-false-value="0"/>
+                                        3: <input disabled name="game-info" id="players_connected_3_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[2]}}" ng-model="saveData.players_connected[2]" ng-true-value="1" ng-false-value="0"/>
+                                        4: <input disabled name="game-info" id="players_connected_4_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{saveData.players_connected[3]}}" ng-model="saveData.players_connected[3]" ng-true-value="1" ng-false-value="0"/>
+                                    </div>
+                                    <div class="col-sm-2 m-1">
+                                        <label class="form-label w-100">Add player: </label>
+                                        <input type="button" class="btn btn-primary" ng-click="addPlayer()" value="Add player"/>
+                                    </div>
+                                    <div class="col-sm-2 m-1">
+                                        <label class="form-label w-100">Remove player: </label>
+                                        <input type="button" class="btn btn-primary" ng-click="removePlayer()" value="Remove player"/>
                                     </div>
                                 </div>
-                                <div class="input-group justify-content-center">
-                                    <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_item_button" value="Add item" ng-click="addItem()"/>
-                                    <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_item_button" value="Remove item" ng-click="removeItem()"/>
+                            </div>
+                        </div>
+                        <div class="accordion-item" ng-repeat="player in saveData.players" ng-if="saveData.players_connected[$index] == 1">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#player-{{player.playerNum}}" aria-expanded="false" aria-controls="game-info">
+                                    <h3>{{player.stats.name ? player.stats.name : "Player " + (player.playerNum + 1)}}</h3>
+                                </button>
+                            </div>
+                            <div id="player-{{player.playerNum}}" class="accordion-collapse collapse" data-bs-parent="#app-info">
+                                <div class="row mt-3 accordion-body">
+                                    <div class="row">
+                                        <h4>General stats</h4>
+                                        <div ng-if="help == 1">
+                                            <p><i>It's probably better to set experience instead of level to level up dynamically (100 per level, level possibly capped to 255). Setting race/class does not change equipment, spells, etc, but may have other effects.</i></p>
+                                            <p><b><i>Setting your character to an expansion class or race that you do not own/have installed will probably break something - be warned!</i></b></p>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label for="{{player.playerNum}}_name" class="form-label">Name: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_name" type="text" class="form-control" ng-model="player.stats.name"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label for="{{player.playerNum}}_level" class="form-label">Level: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_level" type="number" class="form-control" ng-model="player.stats.LVL"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label for="{{player.playerNum}}_exp" class="form-label">Experience: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_exp" type="number" class="form-control" ng-model="player.stats.EXP"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label for="{{player.playerNum}}_gold" class="form-label">Gold: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_gold" type="number" class="form-control" ng-model="player.stats.GOLD"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label for="{{player.playerNum}}_hunger" class="form-label">Hunger: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hunger" type="number" class="form-control" ng-model="player.stats.HUNGER"/>
+                                        </div>
+                                        <div class="col-sm-1 form-group">
+                                            <label for="{{player.playerNum}}_class" class="form-label">Sex: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="1" class="form-control" ng-model="player.stats.sex"/>
+                                        </div>
+                                        <div class="col-sm-3 align-bottom">
+                                            <label class="form-label">Sex type:</label>
+                                            <div class="form-control">{{sexes[player.stats.sex]}}</div>
+                                        </div>  
+                                        <div class="col-sm-1 form-group">
+                                            <label for="{{player.playerNum}}_race" class="form-label">Race: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_race" type="number" min="0" max="17" class="form-control" ng-model="player.race"/>
+                                        </div>
+                                        <div class="col-sm-3 align-bottom">
+                                            <label class="form-label">Race name:</label>
+                                            <div class="form-control">{{races[player.race]}}</div>
+                                        </div>
+                                        <div class="col-sm-1 form-group">
+                                            <label for="{{player.playerNum}}_class" class="form-label">Class: </label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_class" type="number" min="0" max="25" class="form-control" ng-model="player.char_class"/>
+                                        </div>
+                                        <div class="col-sm-3 align-bottom">
+                                            <label class="form-label">Class name:</label>
+                                            <div class="form-control">{{classes[player.char_class]}}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <h5>Items in carried inventory:</h5>
-                                <i>This is what is in your carried inventory, written as: "amount" "quality" "item" "(bonus)".</i> 
-                                <i>Please forgive that the quality-prefix doesn't match the in-game description other than for equipment.</i>
-                                <i>There are 30 inventory slots in total (not counting backpack slots if present), which is enough to overburden most if not careful.</i>
-                                <div class="row">
-                                    <div ng-repeat="item in player.stats.inventory" ng-if="item.x != -9999 && item.type != 162" class="col-sm-3">
-                                        <p class="form-control text-center">{{item.count + " " + quality[item.status] + " " + items[item.type] + " (" + item.beatitude + ")"}}</p>
+                                <div class="row mt-3">
+                                    <h4>Attributes</h4>
+                                    <div ng-if="help == 1">
+                                        <i>Attributes, higher is better what else can I say?</i>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_str" class="form-label">Strength: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_str" type="number" class="form-control" ng-model="player.stats.STR"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_dex" class="form-label">Dexterity: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_dex" type="number" class="form-control" ng-model="player.stats.DEX"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_con" class="form-label">Constitution: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_con" type="number" class="form-control" ng-model="player.stats.CON"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_int" class="form-label">Intelligence: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_int" type="number" class="form-control" ng-model="player.stats.INT"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_per" class="form-label">Perception: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_per" type="number" class="form-control" ng-model="player.stats.PER"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_chr" class="form-label">Charisma: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_chr" type="number" class="form-control" ng-model="player.stats.CHR"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_hp" class="form-label">HP: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_hp" type="number" class="form-control" ng-model="player.stats.HP"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_maxhp" class="form-label">Max HP: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxhp" type="number" class="form-control" ng-model="player.stats.maxHP"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_mp" class="form-label">MP: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_mp" type="number" class="form-control" ng-model="player.stats.MP"/>
+                                    </div>
+                                    <div class="col-sm-2 form-group">
+                                        <label for="{{player.playerNum}}_maxmp" class="form-label">Max MP: </label>
+                                        <input name="player{{player.playerNum}}" id="{{player.playerNum}}_maxmp" type="number" class="form-control" ng-model="player.stats.maxMP"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <h4>Proficiencies</h4>
+                                    <div ng-if="help == 1">
+                                        <i>Proficiencies go from 0-100 (integer), higher is better.</i>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_thaumaturgy" class="form-label">Thaumaturgy: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_thaumaturgy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[4]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_stealth" class="form-label">Stealth: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_stealth" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[1]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_blocking" class="form-label">Blocking: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_blocking" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[13]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_ranged" class="form-label">Ranged: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_ranged" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[8]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_unarmed" class="form-label">Unarmed: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_unarmed" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[14]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_swords" class="form-label">Swords: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_swords" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[9]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_polearms" class="form-label">Polearms: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_polearms" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[12]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_axes" class="form-label">Axes: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_axes" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[11]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_maces" class="form-label">Maces: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_maces" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[10]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_leadership" class="form-label">Leadership: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_leadership" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[5]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_trading" class="form-label">Trading: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_trading" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[2]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_lore" class="form-label">Lore: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_lore" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[3]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_tinkering" class="form-label">Tinkering: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_tinkering" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[0]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_alchemy" class="form-label">Alchemy: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_alchemy" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[15]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_sorcery" class="form-label">Sorcery: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_sorcery" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[7]"/>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="{{player.playerNum}}_mysticism" class="form-label">Mysticism: </label>
+                                        <input name="player{{player.playerNum}}" min="0" max="100" id="{{player.playerNum}}_mysticism" type="number" class="form-control" ng-model="player.stats.PROFICIENCIES[6]"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <h4>Status effects</h4>
+                                    <div ng-if="help == 1">
+                                        <i>Check the relevant box if the effect should be ON. Leave the timer at 0 if you want the effect to be on forever!</i>
+                                    </div>
+                                    <div ng-repeat="effect in player.stats.EFFECTS track by $index" ng-if="statusEffects[$index]" class="col-sm-4">
+                                        <div class="input-group">
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_{{statusEffects[$index][0]}}_check" type="checkbox" class="form-check-input mt-2 mx-2" ng-checked="{{player.stats.EFFECTS[$index]}}" ng-model="player.stats.EFFECTS[$index]" ng-true-value="1" ng-false-value="0"/>
+                                            <label for="{{player.playerNum}}_{{statusEffects[$index][0]}}" class="form-label w-50 align-self-center">{{statusEffects[$index][1]}}:</label>
+                                            <input name="player{{player.playerNum}}" id="{{player.playerNum}}_{{statusEffects[$index][0]}}" type="number" class="form-control w-25 align-self-center" ng-model="player.stats.EFFECTS_TIMERS[$index]"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <h4>Spells known</h4>
+                                    <div ng-repeat="spell in player.spells" class="col-sm-3">
+                                        <p class="form-control text-center">{{spells[spell]}}</p>
+                                    </div>
+                                    <label for="{{player.playerNum}}_spell_select"><h5>Spell list:</h5></label>
+                                    <div class="input-group"> 
+                                        <select class="form-select w-50" id="{{player.playerNum}}_spell_select">
+                                            <option ng-repeat="s in spellsSorted track by $index" ng-if="!['None', 'Arthropod Form', 'Spray Web'].includes(s)">{{s}}</option>
+                                        </select>
+                                        <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_spell_button" value="Add spell" ng-click="addSpell()"/>
+                                        <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_spell_button" value="Remove spell" ng-click="removeSpell()"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <h4>Carried inventory</h4>
+                                    <h5>Add/Remove items from carried inventory:</h5>
+                                    <div ng-if="help == 1">
+                                        <i>
+                                            Most are self explanatory, but good to know: 
+                                            <ul>
+                                                <li>Setting a positive bonus blesses an item, and a negative bonus will curse an item</li>
+                                                <li>Adding more than one of the same type of gear will make the game think they are all the same until you drop/pick up the items</li>
+                                                <li>To remove an item, make sure amount, quality, item, and bonus match exactly what you're trying to remove (removes one at a time)</li>
+                                            </ul>
+                                        </i>
+                                    </div>
+                                    <div class="input-group row">
+                                        <div class="col-sm-2 form-group">
+                                            <label for="{{player.playerNum}}_item_amount" class="form-label align-self-center">Amount:</label>
+                                            <input class="form-control" type="number" min="1" value="1" id="{{player.playerNum}}_item_amount"/>
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <label for="{{player.playerNum}}_item_quality_select" class="form-label align-self-center">Quality:</label>
+                                            <select class="form-select" id="{{player.playerNum}}_item_quality_select">
+                                                <option ng-if="q != 'Excellent'" ng-repeat="q in quality">{{q}}</option>
+                                                <option ng-if="q == 'Excellent'" ng-repeat="q in quality" selected>{{q}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-5 form-group">
+                                            <label for="{{player.playerNum}}_item_select" class="form-label align-self-center">Item:</label>
+                                            <select class="form-select" id="{{player.playerNum}}_item_select">
+                                                <option ng-repeat="i in itemsSorted">{{i}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2 form-group">
+                                            <label for="{{player.playerNum}}_item_bonus" class="form-label align-self-center">Bonus (+/-):</label>
+                                            <input class="form-control" type="number" value="0" id="{{player.playerNum}}_item_bonus"/>
+                                        </div>
+                                    </div>
+                                    <div class="input-group justify-content-center">
+                                        <input type="button" class="btn btn-primary w-25" id="{{player.playerNum}}_add_item_button" value="Add item" ng-click="addItem()"/>
+                                        <input type="button" class="btn btn-danger w-25" id="{{player.playerNum}}_remove_item_button" value="Remove item" ng-click="removeItem()"/>
+                                    </div>
+                                    <h5>Items in carried inventory:</h5>
+                                    <div ng-if="help == 1">
+                                        <i>This is what is in your carried inventory, written as: "amount" "quality" "item" "(bonus)".</i> 
+                                        <i>Please forgive that the quality-prefix doesn't match the in-game description other than for equipment.</i>
+                                        <i>There are 30 inventory slots in total (not counting backpack slots if present), which is enough to overburden most if not careful.</i>
+                                    </div>
+                                    <div class="row">
+                                        <div ng-repeat="item in player.stats.inventory" ng-if="item.x != -9999 && item.type != 162" class="col-sm-3">
+                                            <p class="form-control text-center">{{item.count + " " + quality[item.status] + " " + items[item.type] + " (" + item.beatitude + ")"}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -352,13 +405,15 @@
                     <input type="button" class="btn btn-lg btn-primary" value="Export new save file" ng-click="export()"/>
                 </div>
             </div>
-            <footer>
-                <hr/>
-                <div class="col-sm-12 ms-5">
-                    <p><b>Made by:</b> <a href="https://github.com/Groshie/">Groshie</a></p>
+            <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasBottomLabel"><b>Made by:</b> <a href="https://github.com/Groshie/">Groshie</a></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body small">
                     <p><b>Disclaimer:</b> I am not at all affiliated with the game or the developer of the game, I just like it!</p>
                 </div>
-            </footer>
+            </div>
         </div>
     </body>
 </html>

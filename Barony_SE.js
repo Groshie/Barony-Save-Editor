@@ -1440,14 +1440,14 @@ app.controller('BaronyCtrl', function($scope) {
         "Ring regeneration",
         "Ring teleportation",
         "Spellbook forcebolt",
-        "Spellbook magicmissile",
+        "Spellbook magic missile",
         "Spellbook cold",
         "Spellbook fireball",
         "Spellbook light",
-        "Spellbook removecurse",
+        "Spellbook remove curse",
         "Spellbook lightning",
         "Spellbook identify",
-        "Spellbook magicmapping",
+        "Spellbook magic mapping",
         "Spellbook sleep",
         "Spellbook confuse",
         "Spellbook slow",
@@ -1457,8 +1457,8 @@ app.controller('BaronyCtrl', function($scope) {
         "Spellbook invisibility",
         "Spellbook teleportation",
         "Spellbook healing",
-        "Spellbook extrahealing",
-        "Spellbook cureailment",
+        "Spellbook extra healing",
+        "Spellbook cure ailment",
         "Spellbook dig",
         "Gem rock",
         "Gem luck",
@@ -1862,6 +1862,8 @@ app.controller('BaronyCtrl', function($scope) {
     ];
     $scope.itemsSorted = [... $scope.items].sort();
     $scope.quality = ["Destroyed", "Decrepit", "Worn", "Serviceable", "Excellent"];
+    $scope.help = 1;
+    $scope.dark = 0;
 
 
     // Function for loading a saved game
@@ -1989,7 +1991,11 @@ app.controller('BaronyCtrl', function($scope) {
 
         let thisDL = document.createElement("a");
         thisDL.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(copyData)));
-        thisDL.download = document.getElementById("file-input").files[0].name;
+        if (document.getElementById("file-input").files[0]) {
+            thisDL.download = document.getElementById("file-input").files[0].name;
+        } else {
+            thisDL.download = "savegame0.baronysave";
+        }
         thisDL.click();
         thisDL.remove();
         return
@@ -2164,6 +2170,37 @@ app.controller('BaronyCtrl', function($scope) {
         if (itemRemoved == 0) {
             console.log("Item not found in inventory, item not removed! Item to remove must match settings exactly.");
         }
+        return
+    }
+
+    $scope.toggleHelp = function () {
+        if ($scope.help == 0) {
+            $scope.help = 1;
+        } else {
+            $scope.help = 0;
+        }
+        return
+    }
+
+    $scope.toggleDarkMode = function () {
+        document.body.classList.toggle("bg-dark");
+        document.getElementById("header-div").classList.toggle("bg-dark");
+        document.body.classList.toggle("text-light");
+        document.getElementById("header-div").classList.toggle("text-light");
+        document.getElementsByName("title")[0].classList.toggle("bg-dark");
+        document.getElementsByName("title")[0].classList.toggle("text-light");
+        document.getElementsByName("title")[1].classList.toggle("bg-dark");
+        document.getElementsByName("title")[1].classList.toggle("text-light");
+        if ($scope.dark == 0) {
+            $scope.dark = 1;
+        } else {
+            $scope.dark = 0;
+        }
+        return
+    }
+
+    $scope.toggleHeader = function () {
+        document.getElementById("header-div").classList.toggle("d-none");
         return
     }
     return
